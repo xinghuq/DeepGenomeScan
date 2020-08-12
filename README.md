@@ -7,6 +7,8 @@
 library("devtools")
 
 devtools::install_github("xinghuq/DeepGenomeScan")
+devtools::install_github("xinghuq/CaretPlus/pkg/caret")
+
 ``````
 ## Dependencies
 ``````{r}
