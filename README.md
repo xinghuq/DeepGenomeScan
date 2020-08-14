@@ -10,7 +10,23 @@ devtools::install_github("xinghuq/DeepGenomeScan")
 devtools::install_github("xinghuq/CaretPlus/pkg/caret")
 
 ``````
-## Dependencies
+## Dependencies and environment requirements
+
+#### Note: Environment requirements: python should be installed and the python package of Keras and Tensorflow should also be installed and work properly with the system
+
+## Checking the python environment 
+``````{r}
+library("rappdirs")
+library("reticulate")
+reticulate::use_python("/usr/bin/python3")
+library(caret) ### for ML calling functions and performance estimation, users should use the modified version at xinghuq/CaretPlus/caret instead of the original version
+library(keras)  
+library("tensorflow")
+
+checking if Tensorflow works properly
+K0=keras::backend()
+
+``````
 ``````{r}
 requireNamespace("KLFDAPC")
 
