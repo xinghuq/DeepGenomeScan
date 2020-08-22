@@ -1,9 +1,6 @@
 library(caret)### for ML calling functions and performance estimation
 library(RSNNS) ### for DL
-library("tensorflow")
-library("caretEnsemble")
-library(rBayesianOptimization) ### for parameter tuning and optimazation
-library("RSNNS")
+library(NeuralNetTools)
 set.seed(999)
 options(warn=-1)
 
@@ -51,15 +48,14 @@ for(j in 1:length(simdata)) {
     colnames(data0)[1]="enviri" ### This is more efficient than calling the name of the env factor when traing the model
     data1=as.data.frame(apply(data0,2,normalize))
     model_mlpWeightDecayML_envi<- train(enviri~., data=data1,
-                                       method=c("mlpWeightDecayML"),
+                                       method=c("mlpWeightDecayML"), ### three hidden layer with a decay
                                        metric = "RMSE",## "Accuracy", "RMSE"
                                        tuneLength = 100, ### search 100 combinations of parameters
                                        verbose=0,# verbose=1 is reporting the progress,o is sclience
                                        trControl = econtrol,importance = TRUE)
     
-    
-    MLPImp <- varImp(model_mlpWeightDecayML_envi, scale = FALSE)
-    write.csv(MLPImp$importance,file = paste0("sim_",j,"_",para[i],"_mlpWeightDecayML_env.csv"))
+    MLPImp <- NeuralNetTools::olden(model_mlpWeightDecayML_envi, bar_plot = FALSE)
+    write.csv(MLPImp,file = paste0("sim_",j,"_",para[i],"_mlpWeightDecayML_env.csv"))
     save(model_mlpWeightDecayML_envi,file=paste0("sim_",j,"_",para[i],"_mlpWeightDecayML_env.RData"))
     write.csv(model_mlpWeightDecayML_envi$results,file = paste0("sim_",j,"_",para[i],"_mlpWeightDecayML_envi_tuning.csv") )
     #registerDoSEQ()
