@@ -18,7 +18,7 @@ _Simulations_MLP.R_ : The scripts used for traing MLP model on 100 simulations.
 
 _Simulation_MLP_outliers_: Scripts used for estimating the power of genome scan for three approaches, pcadapt, RDA, and DeepGenomeScan, as well as the figures for the simulations.
 
-_POPRES_DeepGenomeScan_: Scripts used in analyses of POPRES data.
+_POPRES_DeepGenomeScan_: Scripts used in analysis of POPRES data.
 
 ## Step by Step examples for compiling different neural network model using DeepGenomeScan.
 
