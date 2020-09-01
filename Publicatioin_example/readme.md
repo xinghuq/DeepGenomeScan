@@ -13,7 +13,6 @@ The datasets used for the analyses described in this manuscript were obtained fr
 
 Scripts used for the results reported in this paper are available through this github website.
 
-Simulations:
 
 _Simulations_MLP.R_ : The scripts used for traing MLP model on 100 simulations.
 
