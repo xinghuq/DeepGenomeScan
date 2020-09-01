@@ -1,9 +1,9 @@
 ## A Deep Learning Approach for Whole Genome Scan
 
-Qin. X, Gaggiotti. EO, Chiang,C. 2020. **A Deep Learning Approach for Whole Genome Scan**
+Qin. X, Gaggiotti. EO, Chiang, C. 2020. **A Deep Learning Approach for Whole Genome Scan**
 
 
-## Analysis scripts for the article.
+## Analyses for the article.
 
 ## Datasets
 
@@ -15,11 +15,11 @@ Scripts used for the results reported in this paper are available through this g
 
 Simulations:
 
-Simulations_MLP.R : The scripts used for traing MLP model on 100 simulations.
+_Simulations_MLP.R_ : The scripts used for traing MLP model on 100 simulations.
 
-Simulation_MLP_outliers: Scripts used for estimating the power of genome scan for three approaches, pcadapt, RDA, and DeepGenomeScan, as well as the figures for the simulations.
+_Simulation_MLP_outliers_: Scripts used for estimating the power of genome scan for three approaches, pcadapt, RDA, and DeepGenomeScan, as well as the figures for the simulations.
 
-POPRES_DeepGenomeScan: Scripts used in analyses of POPRES data.
+_POPRES_DeepGenomeScan_: Scripts used in analyses of POPRES data.
 
 ## Step by Step examples for compiling different neural network model using DeepGenomeScan.
 
