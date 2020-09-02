@@ -89,7 +89,10 @@ legend("bottomright", legend=levels(y), pch="o", col=1:nlevels(y))
 ``````
 Welcome any [feedback](https://github.com/xinghuq/DeepGenomeScan/issues) and [pull request](https://github.com/xinghuq/DeepGenomeScan/pulls). 
 
+## Version
+
+The current version is 0.5.5 (Sep 2, 2020).
 
 ## Citation
 
-Qin. X. 2020.DeepGenomeScan.0.2.0.
+Qin. X. 2020. DeepGenomeScan. v0.5.5.
