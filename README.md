@@ -1,3 +1,9 @@
+[![R build status](https://https://github.com/xinghuq/DeepGenomeScan//workflows/R-CMD-check/badge.svg)](https://github.com/xinghuq/DeepGenomeScan/)
+[![Build Status](https://travis-ci.com/xinghuq/DeepGenomeScan.svg?branch=master)](https://travis-ci.com/xinghuq/DeepGenomeScan/)
+[![Build status](https://ci.appveyor.com/api/projects/status/hqpwmgfeuerel48l?svg=true)](https://ci.appveyor.com/xinghuq/DeepGenomeScan/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
+
 ## DeepGenomeScan : A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-wide Association Studies (GWAS)
 
   This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic computational framework integrating deep learning (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)), robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. The package use the tensorflow as the backend. The design makes the implemention user-friendly. Users can adopt the package's framework to study various ecological and evolutionary questions, but not only constraining in biology field.  
