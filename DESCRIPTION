@@ -1,7 +1,7 @@
 Package: DeepGenomeScan
 Type: Package
 Title: DeepGenomeScan: A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-wide Association Studies (GWAS)
-Version: 0.1.0
+Version: 0.5.5
 Author: Xinghu Qin
 Maintainer: Xinghu Qin <qinxinghu@gmail.com>
 Description: This package implements the whole genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic learning and computational design integrating deep learning, robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. 
