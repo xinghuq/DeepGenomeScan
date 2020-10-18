@@ -6,7 +6,7 @@ Author: Xinghu Qin
 Maintainer: Xinghu Qin <qinxinghu@gmail.com>
 Description: This package implements the whole genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic learning and computational design integrating deep learning, robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. 
    DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. 
-   The package use the tensorflow as the backend. The design makes the implemention user-friendly. Users can adopt the package's framework to study various ecological and evolutionary questions. 
+   The framework makes the implemention user-friendly. Users can adopt the package's framework to study various ecological and evolutionary questions. 
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
