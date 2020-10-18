@@ -38,7 +38,7 @@ requireNamespace("KLFDAPC")
 
  if (!requireNamespace("KLFDAPC", quietly=TRUE))
 
-  devtools::Install_github("xinghuq/KLFDAPC")
+  devtools::install_github("xinghuq/KLFDAPC")
   
  if (!requireNamespace("DA", quietly=TRUE))
  
