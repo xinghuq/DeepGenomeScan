@@ -9,7 +9,7 @@
 }
 \usage{
 DeepGenomeScan(x, ...)
-}
+
 ## Default S3 method:
 DeepGenomeScan(
   genotype, 
@@ -40,6 +40,7 @@ DeepGenomeScan(
   tuneGrid = NULL,
   tuneLength = ifelse(trControl$method == "none", 1, 3),
 seed = 123)
+  }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{genotype}{The genotype matrix, or other omics-based variations matrix. This is a  matrix where samples are in rows and variations/features are in columns. This could be a simple matrix, data frame or other type (e.g. sparse matrix) but must have column names (see Details below). Preprocessing using the preProcess argument only supports matrices or data frames. When using the recipe method, _"genotype"_ should be an unprepared recipe object that describes the model terms (i.e. outcome, predictors, etc., e.g. the h2o model in our example) as well as any pre-processing that should be done to the data. This is an alternative approach to specifying the model. Note that, when using the recipe method, any arguments passed to preProcess will be ignored. See the links and example below for more details using recipes.
@@ -49,7 +50,7 @@ seed = 123)
 %%     ~~Describe \code{x} here~~
 }
 
- \item{\methods}{The read-to-use models or user defined models. A string specifying which model to use. A list of functions can also be passed for a custom model function, see our example tutorials.
+ \item{\method}{The read-to-use models or user defined models. A string specifying which model to use. A list of functions can also be passed for a custom model function, see our example tutorials.
 %%     ~~Describe \code{\dots} here~~
 }
   \item{\dots}{Arguments passed to the defined models (such as "mlpWeightDecayML"). Errors will occur if values for tuning parameters are passed here.
