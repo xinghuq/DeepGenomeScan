@@ -62,11 +62,11 @@ seed = 123)
 \details{
 %%  ~~ If necessary, more details than the description above ~~
 }
-\value{
+\value{ This step is the model training and tuning process. Values return the final fitted model and parameters, as well as the details of model tuning metrics. 
+       In terms of estimating variation (variable) importance, feed the model to varImp and then use the importance to estimate the q-values (DL_qvalues).
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
+
 %% ...
 }
 \references{
@@ -88,14 +88,14 @@ seed = 123)
 ##---- Should be DIRECTLY executable !! ----
 ##-- ==>  Define data, use random,
 ##--	or do  help(data=index)  for the standard data sets.
-
+#### example
+#load("sim_example.RData")
+#genotype=sim_example[,-c(1:14)]
+#env=sim_example[,2:11]
 ## The function is currently defined as
-function (x, ...) 
-{
-    UseMethod("DeepGenomeScan")
-  }
+
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{ ~kwd2 }% 
