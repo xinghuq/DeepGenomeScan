@@ -46,8 +46,8 @@
     UseMethod("varImp")
   }
 varImp.keras = function(object, ...) {
-  object=keras::unserialize_model(object$finalModel$object
-  NULL_imp <- as.data.frame(CNN_varIMP_NULL_model(object),
+  object=keras::unserialize_model(object$finalModel$object)
+  CNN_null_imp <- as.data.frame(CNN_varIMP_NULL_model(object),
                                              feature_names,
                                              train_y=env,
                                              train_x=as.matrix(genotype),
@@ -59,8 +59,8 @@ varImp.keras = function(object, ...) {
                                              verbose = FALSE,
                                              progress = "none",
                                              parallel = TRUE,
-                                             paropts = NULL))
-  out=NULL_imp$CNN_Decrease_acc
+                                             paropts = NULL)
+  out=CNN_null_imp$CNN_Decrease_acc
   colnames(out)[colnames(out) == "CNN_Decrease_acc"] <- "Overall"
   rownames(out) <- out$variable
   out[, c("Overall"), drop = FALSE]
