@@ -153,7 +153,4 @@ return(list(DLmodel,VarImps))
 }
 
 
-#### example
-load("sim_example.RData")
-genotype=sim_example[,-c(1:14)]
-env=sim_example[,2:11]
+
