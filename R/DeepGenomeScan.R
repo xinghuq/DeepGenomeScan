@@ -1,7 +1,7 @@
 #####DeepGenomeScan 
 
 "DeepGenomeScan" <-
-    function(x, ...){
+    function(genotype, ...){
       UseMethod("DeepGenomeScan")
     }
 
@@ -67,13 +67,13 @@ DeepGenomeScan.formula=function(form, data,  weights = NULL, subset = NULL, na.a
 return(model_train)
 }
 
-DeepGenomeScan.recipe=function(x, data, method = "mlpWeightDecayML", metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
+DeepGenomeScan.recipe=function(genotype, data, method = "mlpWeightDecayML", metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
                                  maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
                                  trControl = trainControl(),
                                  tuneGrid = NULL,
                                  tuneLength = ifelse(trControl$method == "none", 1, 3),...){
   
-  model_train=caret::train(x,data, method = method,..., metric = metric,
+  model_train=caret::train(genotype,data, method = method,..., metric = metric,
     maximize = maximize,
     trControl = trControl,
     tuneGrid = tuneGrid,
@@ -83,7 +83,7 @@ DeepGenomeScan.recipe=function(x, data, method = "mlpWeightDecayML", metric = if
 
 #### Improtance function
 
-NeuralNetTools::olden
+
 
 
 
