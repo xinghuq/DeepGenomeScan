@@ -1,10 +1,10 @@
-DLqvalues<-function(DL_data,K)
+DLqvalues<-function(DL_data,K,estimation="auto")
 {
   require(robust)
   require(qvalue)
   loadings<-DL_data# [,1:as.numeric(K)]
   resscale <- apply(loadings, 2, scale)
-  resmaha <- covRob(resscale, distance = TRUE, na.action= na.omit, estim="donostah")$dist
+  resmaha <- covRob(resscale, distance = TRUE, na.action= na.omit, estim=estimation)$dist
   lambda <- median(resmaha)/qchisq(0.5,df=K)
   reschi2test <- pchisq(resmaha/lambda,K,lower.tail=FALSE)
   qval <- qvalue(reschi2test)
