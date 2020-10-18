@@ -1,10 +1,10 @@
 \name{varImp}
 \alias{varImp}
 %- Also NEED an '\alias' for EACH other topic documented here.
-\title{
+\title{Variable importance for DeepGenomeScan models
 %%  ~~function to do ... ~~
 }
-\description{Variable importance for neural networks
+\description{Variable importance for neural networks in DeepGenomeScan.
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
