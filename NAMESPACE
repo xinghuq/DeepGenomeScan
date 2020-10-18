@@ -1,4 +1,7 @@
 export(CNN_varIMP_NULL_model)
 export(CNN_varIMP_permute)
+export(MLP_varIMP_NULL_model)
+export(MLP_varIMP_permute)
 export(CNN_sgd)
 export(DLqvalues)
+export(varImp)
