@@ -50,7 +50,7 @@ seed = 123)
 %%     ~~Describe \code{x} here~~
 }
 
- \item{\method}{The read-to-use models or user defined models. A string specifying which model to use. A list of functions can also be passed for a custom model function, see our example tutorials.
+ \item{method}{The read-to-use models or user defined models. A string specifying which model to use. A list of functions can also be passed for a custom model function, see our example tutorials.
 %%     ~~Describe \code{\dots} here~~
 }
   \item{\dots}{Arguments passed to the defined models (such as "mlpWeightDecayML"). Errors will occur if values for tuning parameters are passed here.
