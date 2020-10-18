@@ -8,7 +8,7 @@
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-DeepGenomeScan(x, ...)
+DeepGenomeScan(genotype, ...)
 
 ## Default S3 method:
 DeepGenomeScan(
@@ -46,7 +46,7 @@ seed = 123)
   \item{genotype}{The genotype matrix, or other omics-based variations matrix. This is a  matrix where samples are in rows and variations/features are in columns. This could be a simple matrix, data frame or other type (e.g. sparse matrix) but must have column names (see Details below). Preprocessing using the preProcess argument only supports matrices or data frames. When using the recipe method, _"genotype"_ should be an unprepared recipe object that describes the model terms (i.e. outcome, predictors, etc., e.g. the h2o model in our example) as well as any pre-processing that should be done to the data. This is an alternative approach to specifying the model. Note that, when using the recipe method, any arguments passed to preProcess will be ignored. See the links and example below for more details using recipes.
 %%     ~~Describe \code{x} here~~
 }
-\item{env/traits}{The environmental variables/geographic coordinates, or the latent geographic genetic structure vairbales produced from KLFDAPC. For GWAS, this shoud be the traits or phenotypic variables. The data can be a numeric or factor vector corresponding to each sample.
+\item{env}{env/trait data. The environmental variables/geographic coordinates, or the latent geographic genetic structure vairbales produced from KLFDAPC. For GWAS, this shoud be the traits or phenotypic variables. The data can be a numeric or factor vector corresponding to each sample.
 %%     ~~Describe \code{x} here~~
 }
 
