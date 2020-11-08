@@ -117,6 +117,10 @@ rownames(out) <- out$names
 plot(out$Overall,  ylab="SNP importance")
 
 ``````
+### Package tutorial
+
+More about how to construct your own model using DeepGenomeScan can be found in the [tutorial](https://xinghuq.github.io/DeepGenomeScan/index.html)
+
 Welcome any [feedback](https://github.com/xinghuq/DeepGenomeScan/issues) and [pull request](https://github.com/xinghuq/DeepGenomeScan/pulls). 
 
 ## Version
