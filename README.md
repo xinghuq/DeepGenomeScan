@@ -56,13 +56,31 @@ if (!requireNamespace("keras", quietly=TRUE))
   install.packages("kerasR")
 
 ``````
+
+### library
+
+```{r library,message = FALSE}
+library(DeepGenomeScan)
+library(caret)### for ML calling functions and performance estimation
+library(keras) ### for DL
+library("tensorflow")
+library("caretEnsemble")
+library(kerasR)
+library("RSNNS")
+library(NeuralNetTools)
+
+```
+
 ### Example
 
 ### Preparing data
 ``````{r}
 f <- system.file('extdata',package='DeepGenomeScan')
-
-infile <- file.path(f, "Test_env1_CNN_random_91.RData")
+infile <- file.path(f, "sim1.csv")
+sim_example=read.csv(infile)
+genotype=sim_example[,-c(1:14)]
+env=sim_example[,2:11]
+str(sim_example)
 ``````
 
 
