@@ -58,33 +58,45 @@ if (!requireNamespace("keras", quietly=TRUE))
 ``````
 ### Example
 
+### Preparing data
 ``````{r}
 f <- system.file('extdata',package='DeepGenomeScan')
 
 infile <- file.path(f, "Test_env1_CNN_random_91.RData")
 ``````
-##Note the labels below is random
+
+
+### Setting the resampling method
 ``````{r}
-y1=rep(1,times=1736)
-y2=rep(2,times=2000)
+econtrol1 <- trainControl(## 5-fold CV, repeat 5 times
+  method = "adaptive_cv",
+  number = 5,
+  ## repeated ten times
+  repeats = 5,search = "random")
+set.seed(999)
+options(warn=-1
+``````
+### DeepGenomeScan with "mlph2o" model
+```{r}
 
-y=rbind(as.matrix(y1),as.matrix(y2))
+h2o_mlp<- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
+                                  method="mlph2o",
+                                  metric = "RMSE",## "Accuracy", "RMSE","Rsquared","MAE"
+                                  tuneLength = 10, ### 11 tunable parameters 11^2
+                                  # tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100
+                                  trControl = econtrol1)
 
-y=as.factor(y)
+#### There is a model specific varIMP for this model
+varImp(h2o_mlp,scale = FALSE)
+
+out <- as.data.frame(h2o::h2o.varimp(h2o_mlp$finalModel), stringsAsFactors = TRUE)
+colnames(out)[colnames(out) == "scaled_importance"] <- "Overall"
+rownames(out) <- out$names
 
 ``````
+##### Plot the SNP importance scores
 ``````{r}
-# Using gaussan kernel
-# This will take longer than PCA, denpending on the number of samples and n.pcs. We will not show the results here. Users can test on their own clusters
-
-virus_klfdapc=KLFDAPC(infile,y,kernel=kernlab::rbfdot(sigma = 0.5),r=3,snp.id=NULL, maf=0.05, missing.rate=0.05,n.pc=10,tol=1e-30, num.thread=2,metric = "plain",prior = NULL)
-
-showfile.gds(closeall=TRUE)
-``````
-##### Plot the reduced features
-``````{r}
-plot(virus_klfdapc$KLFDAPC$Z, virus_klfdapc$KLFDAPC$Z, col=as.integer(y), xlab="KLFDA 2", ylab="KLFDA 1")
-legend("bottomright", legend=levels(y), pch="o", col=1:nlevels(y))
+plot(out$Overall,  ylab="SNP importance")
 
 ``````
 Welcome any [feedback](https://github.com/xinghuq/DeepGenomeScan/issues) and [pull request](https://github.com/xinghuq/DeepGenomeScan/pulls). 
@@ -95,4 +107,6 @@ The current version is 0.5.5 (Sep 2, 2020).
 
 ## Citation
 
-Qin. X. 2020. DeepGenomeScan. v0.5.5.
+Qin, X. 2020. DeepGenomeScan. v0.5.5.
+
+Qin, X., Gaggiotti, EO., Chiang, C. 2020. Detecting natural selection via deep learning. In submission.
