@@ -1,0 +1,82 @@
+
+url: http://github.com/xinghuq/DeepGenomeScan
+
+development:
+  mode: auto
+
+template:
+  params:
+    ganalytics: UA-158177382-1
+
+authors:
+  Xinghu Qin:
+  href: https://sites.google.com/view/communitygenomics/home
+
+
+
+navbar:
+  left:
+    - text: "Home"
+      href: articles/home.html
+    - text: "Tutorials"
+      href: articles/index.html
+    - text: "Manual"
+      href: reference/index.html
+
+home:
+- title: "A Deep Learning Approach for Genome Scan and Genome Wide Association Study"
+  contents: 
+  - home
+- title: "A Deep Learning Approach for Genome Scan and Genome Wide Association Study"
+  links:
+  - text: Ask a question about DeepGenomeScan
+    href: https://community.rstudio.com/
+
+articles:
+- title: "A Deep Learning Approach for Genome Scan and Genome Wide Association Study"
+  navbar: ~
+  contents:
+  - Deep Learning Architecture Construction
+  - DeepGenomeScan_model_list
+  - Activation_functions
+
+- title: "Deep Learning Architecture Construction"
+  navbar: ~
+  contents:
+  - Deep Learning Architecture Construction
+
+- title: "DeepGenomeScan Models"
+  navbar: ~
+  contents:
+  - DeepGenomeScan_model_list
+
+- title: "Activation functions"
+  navbar: ~
+  contents:
+  - Activation_functions
+
+reference:
+  - title: DeepGenomeScan general function
+    desc: DeepGenomeScan functions
+  - contents:
+    - starts_with("DeepGenomeScan")
+    - starts_with("DLqvalues")
+
+
+  - title: Importance methods
+  - contents:
+    - starts_with("varImp")
+    - starts_with("CNN_varIMP_NULL_model")
+    - starts_with("CNN_varIMP_permute")
+    - starts_with("MLP_varIMP_NULL_model")
+    - starts_with("MLP_varIMP_permute")
+    
+  - title: Models 
+  - contents:
+    - starts_with("model_info")
+  - title: Activations
+  - contents:
+    - starts_with("Activation_info")
+  - title: Example data
+  - contents:
+    - starts_with("sim_example")

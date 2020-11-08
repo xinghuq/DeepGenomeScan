@@ -1,0 +1,13 @@
+pandoc: 1.19.2.1
+pkgdown: 1.6.1.9000
+pkgdown_sha: e1e46f2e13c7efdb17bc4eae40bc3779c2b0b517
+articles:
+  Activation_functions: Activation_functions.html
+  Deep Learning Architecture Construction: Deep Learning Architecture Construction.html
+  DeepGenomeScan_model_list: DeepGenomeScan_model_list.html
+  home: home.html
+last_built: 2020-11-08T20:53Z
+urls:
+  reference: http://github.com/xinghuq/DeepGenomeScan/reference
+  article: http://github.com/xinghuq/DeepGenomeScan/articles
+
