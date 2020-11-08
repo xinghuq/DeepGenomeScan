@@ -1,0 +1,36 @@
+,name,model,type,libraries,num_param
+1,Linear Regression,lm,Regression,,intercept
+2,Logic Regression,logreg,"Classification, Regression",LogicReg,"treesize, ntrees"
+3,Principal Component Analysis,pcr,Regression,pls,ncomp
+4,Stochastic Gradient Boosting,gbm,"Classification, Regression","gbm, plyr","n.trees, interaction.depth, shrinkage, n.minobsinnode"
+5,The Bayesian lasso,blasso,Regression,monomvn,sparsity
+6,The lasso,lasso,Regression,elasticnet,fraction
+7,Tree Models from Genetic Algorithms,evtree,"Classification, Regression",evtree,alpha
+8,Ridge Regression,ridge,Regression,elasticnet,lambda
+9,Ridge Regression with Variable Selection,foba,Regression,foba,"k, lambda"
+10,glmnet (Lasso and Elastic-Net Regularized Generalized Models),glmnet,"Classification, Regression","glmnet, Matrix","alpha, lambda"
+11,glmnet (Lasso and Elastic-Net Regularized Generalized Models),glmnet_h2o,"Classification, Regression",h2o,"alpha, lambda"
+12,Model Averaged Neural Network,avNNet,"Classification, Regression",nnet,"size, decay, bag"
+13,Monotone Multi-Layer Perceptron Neural Network,monmlp,"Classification, Regression",monmlp,"hidden1, n.ensemble"
+14,Multi-Layer Perceptron (MLP),mlp,"Classification, Regression",RSNNS,size
+15,Multi-Layer Perceptron (MLP),mlpWeightDecay,"Classification, Regression",RSNNS,"size, decay"
+16,"Multi-Layer Perceptron, MLP, multiple layers",mlpWeightDecayML,"Classification, Regression",RSNNS,"layer1, layer2, layer3, decay"
+17,Multilayer Perceptron Network by Stochastic Gradient Descent,mlpSGD,"Classification, Regression","FCNN4R, plyr","size, l2reg, lambda, learn_rate, momentum, gamma, minibatchsz, repeats"
+18,Multilayer Perceptron Network with Dropout,mlpKerasDropout,"Classification, Regression",keras,"size, dropout, batch_size, lr, rho, decay, activation"
+19,Multilayer Perceptron Network with Weight Decay,mlpKerasDecay,"Classification, Regression",keras,"size, lambda, batch_size, lr, rho, decay, activation"
+20,"Multi-Layer Perceptron, with multiple layers",mlpML,"Classification, Regression",RSNNS,"layer1, layer2, layer3"
+21,Multi-Step Adaptive MCP-Net,msaenet,"Classification, Regression",msaenet,"alphas, nsteps, scale"
+22,Multi-Layer Perceptron Neural Network,mxnet,"Classification, Regression",mxnet,"layer1, layer2, layer3, learning.rate, momentum, dropout, activation"
+23,Multi-Layer Perceptron Neural Network,mxnetAdam,"Classification, Regression",mxnet,"layer1, layer2, layer3, dropout, beta1, beta2, learningrate, activation"
+24,Multi-Layer Perceptron Neural Network,neuralnet,Regression,neuralnet,"layer1, layer2, layer3"
+25,Neural Network,nnet,"Classification, Regression",nnet,"size, decay"
+26,Neural Networks with Feature Extraction,pcaNNet,"Classification, Regression",nnet,"size, decay"
+27,Quantile Regression Neural Network,qrnn,Regression,qrnn,"n.hidden, penalty, bag"
+28,Stacked AutoEncoder Deep Neural Network,dnn,"Classification, Regression",deepnet,"layer1, layer2, layer3, hidden_dropout, visible_dropout"
+29,Convolutional Neural Network,CNNsgd,"Classification, Regression",keras,"nFilter,nStride,lambda, units1,units2,dropout, activation1,activation2,activation3"
+30,"Deep learning (Multi-Layer Perceptron, MLP)",mlpFCNN4Rsgd,"Classification, Regression",FCNN4R,"units1,units2, l2reg, lambda, learn_rate,  momentum, gamma, minibatchsz, repeats,activation1,activation2"
+31,"Deep learning (Multi-Layer Perceptron, MLP)",mlph2o,"Classification, Regression",h2o,"units1,units2, l2reg, rho, activation"
+32,"Deep learning (Multi-Layer Perceptron, MLP)",mlpneuralnet,"Classification, Regression",neuralnet,"layer1, layer2, layer3,activation1,linear.output"
+33,"Deep learning (Multi-Layer Perceptron, MLP)",mlpneuralnet1,"Classification, Regression",neuralnet,"layer1, layer2, layer3,activation1,activation2,linear.output"
+34,"Deep learning (Multi-Layer Perceptron, MLP)",modelmlpkerasdropout,"Classification, Regression",keras,"units1,units2, dropout1,dropout2,batch_size, lr, rho, decay, activation1,activation2,activation3"
+35,"Deep learning (Multi-Layer Perceptron, MLP)",modelRSNNSmlpdecay,"Classification, Regression",RSNNS,"layer1,layer2,layer3, decay,activation1,activation2"
