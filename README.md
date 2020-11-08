@@ -123,6 +123,10 @@ Welcome any [feedback](https://github.com/xinghuq/DeepGenomeScan/issues) and [pu
 
 The current version is 0.5.5 (Sep 2, 2020).
 
+## Contact
+
+qinxinghu@gmail.com
+
 ## Citation
 
 Qin, X. 2020. DeepGenomeScan. v0.5.5.
