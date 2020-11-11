@@ -95,7 +95,7 @@ econtrol1 <- trainControl(## 5-fold CV, repeat 5 times
   ## repeated ten times
   repeats = 5,search = "random")
 set.seed(999)
-options(warn=-1
+options(warn=-1)
 ``````
 ### DeepGenomeScan with "mlph2o" model
 ```{r}
