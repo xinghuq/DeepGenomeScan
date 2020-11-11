@@ -80,7 +80,10 @@ infile <- file.path(f, "sim1.csv")
 sim_example=read.csv(infile)
 genotype=sim_example[,-c(1:14)]
 env=sim_example[,2:11]
-str(sim_example)
+normalize <- function(x) {
+  return ((x - min(x)) / (max(x) - min(x)))
+}
+genotype_norm=as.data.frame(apply(genotype,2,normalize))
 ``````
 
 
