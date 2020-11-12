@@ -35,8 +35,7 @@ DeepGenomeScan.default1=function(genotype, env,method = "mlp",
                           repeats = 5,search = "random"),
                         tuneLength = 10,
                         importance = c("permutation","NULL_model","Olden","Garson"), nsim= if (importance=="permutation") nsim=10,...){ 
-  require(caret)
-  require(caretEnsemble)               
+         
     model_train=caret::train(x=genotype,
                                 y=env,
                              method = method,
