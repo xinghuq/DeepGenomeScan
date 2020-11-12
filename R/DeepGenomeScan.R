@@ -101,8 +101,6 @@ DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
                                  trControl = trainControl(),
                                  
                                  tuneLength = ifelse(trControl$method == "none", 1, 3),...){
-  require(caret)
-  require(caretEnsemble)
   model_train=caret::train(genotype,data, method = method,
                            ..., 
                            metric =metric ,
