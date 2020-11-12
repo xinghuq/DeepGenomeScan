@@ -22,7 +22,6 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
                            metric =metric ,
                            trControl = trControl,
                            tuneLength = tuneLength,...)
-  class(model_train)="DeepGenomeScan"
   return(model_train)  
   
   }
@@ -87,8 +86,6 @@ DeepGenomeScan.CNN=function(genotype, env,method = "mlp",
   if (importance=="Garson") VarImps <- NeuralNetTools::garson(model_train,bar_plot = FALSE)
   
   return(list(model_train,VarImps))
-  class(model_train)="DeepGenomeScan"
-  return(model_train)
 }
 
 DeepGenomeScan.formula=function(form, data,...){
@@ -107,7 +104,6 @@ DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
                             metric =metric ,
                            trControl = trControl,
                            tuneLength = tuneLength, ...)
-  class(model_train)="DeepGenomeScan"
   return(model_train)
 }
 
