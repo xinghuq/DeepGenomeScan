@@ -5,16 +5,47 @@
       UseMethod("DeepGenomeScan")
     }
 
-DeepGenomeScan.default=function(genotype, env,method = "mlpWeightDecayML",preProcess = NULL,weights = NULL,
-                        metric = ifelse(is.factor(y), "Accuracy", "RMSE"),
-                        maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
-                        trControl = trainControl(),
-                        tuneGrid = NULL, tuneLength = ifelse(trControl$method == "none", 1, 3),
+
+DeepGenomeScan.default=function(genotype, env,method = "mlp",preProcess = NULL,weights = NULL,
+                                metric="RMSE",
+                                maximize =  "MAE",
+                                trControl =trainControl(## 5-fold CV, repeat 5 times
+                                  method = "repeatedcv",
+                                  number = 5,
+                                  ## repeated 5 times
+                                  repeats = 5,search = "random"),
+                                tuneGrid = NULL, tuneLength = 10,...){ 
+  model_train=caret::train(x=genotype,
+                           y=env,
+                           method = method,
+                           ..., 
+                           metric =metric ,
+                           trControl = trControl,
+                           tuneLength = tuneLength)
+  class(model_train)="DeepGenomeScan"
+  return(model_train)  
+  
+  }
+
+DeepGenomeScan.default1=function(genotype, env,method = "mlp",preProcess = NULL,weights = NULL,
+                        metric = "RMSE",
+                        maximize =  "MAE",
+                        trControl = trainControl(## 5-fold CV, repeat 5 times
+                          method = "repeatedcv",
+                          number = 5,
+                          ## repeated 5 times
+                          repeats = 5,search = "random"),
+                        tuneGrid = NULL, tuneLength = 10,
                         importance = c("permutation","NULL_model","Olden","Garson"), nsim= if (importance=="permutation") nsim=10,...){ 
-  model_train=caret::train(x=as.matrix(genotype),y=as.matrix(env),method = method,preProcess = preProcess,..., weights = weight,metric =metric ,maximize =maximize,
-    trControl = trControl,
-    tuneGrid = tuneGrid,
-    tuneLength = tuneLength)
+  require(caret)
+  require(caretEnsemble)               
+    model_train=caret::train(x=genotype,
+                                y=env,
+                             method = method,
+                             ..., 
+                             metric =metric ,
+                             trControl = trControl,
+                             tuneLength = tuneLength)
   
   
   if (method!= "CNN_sgd" | "*Keras" | importance =="permutation" |"NULL_model")
@@ -57,27 +88,30 @@ DeepGenomeScan.default=function(genotype, env,method = "mlpWeightDecayML",prePro
   if (importance=="Garson") VarImps <- NeuralNetTools::garson(model_train,bar_plot = FALSE)
   
   return(list(model_train,VarImps))
-  
+  class(model_train)="DeepGenomeScan"
   return(model_train)
 }
 
 DeepGenomeScan.formula=function(form, data,  weights = NULL, subset = NULL, na.action = na.fail, contrasts = NULL,...){
 
-  model_train=caret::train(form, data, ..., weights, subset, na.action = na.action, contrasts = contrasts)
-return(model_train)
+  model_train=caret::train(form, data, ...)
+  class(model_train)="DeepGenomeScan"
+  return(model_train)
 }
 
-DeepGenomeScan.recipe=function(genotype, data, method = "mlpWeightDecayML", metric = ifelse(is.factor(y_dat), "Accuracy", "RMSE"),
-                                 maximize = ifelse(metric %in% c("RMSE", "logLoss", "MAE"), FALSE, TRUE),
+DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
+                                 maximize =  "MAE",
                                  trControl = trainControl(),
                                  tuneGrid = NULL,
                                  tuneLength = ifelse(trControl$method == "none", 1, 3),...){
-  
-  model_train=caret::train(genotype,data, method = method,..., metric = metric,
-    maximize = maximize,
-    trControl = trControl,
-    tuneGrid = tuneGrid,
-    tuneLength = tuneLength)
+  require(caret)
+  require(caretEnsemble)
+  model_train=caret::train(genotype,data, method = method,
+                           ..., 
+                           metric =metric ,
+                           trControl = trControl,
+                           tuneLength = tuneLength)
+  class(model_train)="DeepGenomeScan"
   return(model_train)
 }
 
@@ -87,8 +121,7 @@ DeepGenomeScan.recipe=function(genotype, data, method = "mlpWeightDecayML", metr
 
 
 
-
-DeepGenomeScan=function(genotype, env,method=modelmlpkerasdropout,
+DeepGenomeScan.keras=function(genotype, env,method=method,
                         metric = "MAE",## "Accuracy", "RMSE","Rsquared"
                         tuneLength = 11, ### number of parameter combinations
                         # tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100
@@ -101,7 +134,7 @@ DeepGenomeScan=function(genotype, env,method=modelmlpkerasdropout,
                         importance = c("permutation","NULL_model","Olden","Garson"), nsim= if (importance=="permutation") nsim=10,...){
   
 
- DLmodel<- caret::train(x=as.matrix(genotype),y=as.matrix(env),
+ DLmodel<- caret::train(x=genotype,y=env,
                                  method=method,
                                  metric = metric,## "Accuracy", "RMSE","Rsquared"
                                  tuneLength = tuneLength, ### 11 tunable parameters 11^2
@@ -153,4 +186,7 @@ return(list(DLmodel,VarImps))
 }
 
 
-
+#### example
+#load("sim_example.RData")
+#genotype=sim_example[,-c(1:14)]
+#env=sim_example[,2:11]
