@@ -15,6 +15,23 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
                                   ## repeated 5 times
                                   repeats = 5,search = "random"),
                                  tuneLength = 10,...){ 
+    
+    if(is.null(colnames(x)))
+    stop("Please use column names for `x`", call. = FALSE)
+
+  if(is.character(y)) y <- as.factor(y)
+
+  if( !is.numeric(y) & !is.factor(y) ){
+    msg <- paste("Please make sure that the outcome column is a factor or numeric .",
+                 "The class(es) of the column:",
+                 paste0("'", class(y), "'", collapse = ", "))
+
+    stop(msg, call. = FALSE )
+  }
+
+     if(any(class(x) == "data.table")) x <- as.data.frame(x, stringsAsFactors = TRUE)
+  check_dims(x = x, y = y)
+  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
   model_train=caret::train(x=genotype,
                            y=env,
                            method = method,
@@ -89,11 +106,48 @@ DeepGenomeScan.CNN=function(genotype, env,method = "mlp",
 }
 
 DeepGenomeScan.formula=function(form, data,...){
+m <- match.call(expand.dots = FALSE)
+  if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data, stringsAsFactors = TRUE)
+  m$... <- m$contrasts <- NULL
 
-  model_train=caret::train(form=form, data=data, ...)
-  class(model_train)="DeepGenomeScan"
-  return(model_train)
+  check_na_conflict(match.call(expand.dots = TRUE))
+
+  ## Look for missing `na.action` in call. To make the default (`na.fail`)
+  ## recognizable by `eval.parent(m)`, we need to add it to the call
+  ## object `m`
+
+  if(!("na.action" %in% names(m))) m$na.action <- quote(na.fail)
+
+  # do we need the double colon here?
+  m[[1]] <- quote(stats::model.frame)
+  m <- eval.parent(m)
+  if(nrow(m) < 1) stop("Every row has at least one missing value were found", call. = FALSE)
+  Terms <- attr(m, "terms")
+  x <- model.matrix(Terms, m, contrasts)
+  cons <- attr(x, "contrast")
+  int_flag <- grepl("(Intercept)", colnames(x))
+  if (any(int_flag)) x <- x[, !int_flag, drop = FALSE]
+  w <- as.vector(model.weights(m))
+  y <- model.response(m)
+
+  model_train <- caret::train(x, y, weights = w, ...)
+  model_train$terms <- Terms
+  model_train$coefnames <- colnames(x)
+  model_train$call <- match.call()
+  model_train$na.action <- attr(m, "na.action")
+  model_train$contrasts <- cons
+  model_train$xlevels <- .getXlevels(Terms, m)
+  if(!is.null(model_train$trainingData)) {
+    ## We re-save the original data from the formula interface
+    ## since it has not been converted to dummy variables.
+    model_train$trainingData <- data[,all.vars(Terms), drop = FALSE]
+    isY <- names(model_train$trainingData) %in% as.character(form[[2]])
+    if(any(isY)) colnames(model_train$trainingData)[isY] <- ".outcome"
+  }
+  class(model_train) <- c("DeepGenomeScan", "DeepGenomeScan.formula")
+  model_train
 }
+
 
 DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
                                  
