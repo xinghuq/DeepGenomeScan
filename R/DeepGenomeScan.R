@@ -105,34 +105,35 @@ DeepGenomeScan.CNN=function(genotype, env,method = "mlp",
   return(list(model_train,VarImps))
 }
 
+
 DeepGenomeScan.formula=function(form, data,...){
-m <- match.call(expand.dots = FALSE)
+  m <- match.call(expand.dots = FALSE)
   if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data, stringsAsFactors = TRUE)
   m$... <- m$contrasts <- NULL
-
+  
   check_na_conflict(match.call(expand.dots = TRUE))
-
+  
   ## Look for missing `na.action` in call. To make the default (`na.fail`)
   ## recognizable by `eval.parent(m)`, we need to add it to the call
   ## object `m`
-
+  
   if(!("na.action" %in% names(m))) m$na.action <- quote(na.fail)
-
+  
   # do we need the double colon here?
   m[[1]] <- quote(stats::model.frame)
   m <- eval.parent(m)
   if(nrow(m) < 1) stop("Every row has at least one missing value were found", call. = FALSE)
   Terms <- attr(m, "terms")
-  x <- model.matrix(Terms, m, contrasts)
-  cons <- attr(x, "contrast")
-  int_flag <- grepl("(Intercept)", colnames(x))
-  if (any(int_flag)) x <- x[, !int_flag, drop = FALSE]
+  genotype <- model.matrix(Terms, m, contrasts)
+  cons <- attr(genotype, "contrast")
+  int_flag <- grepl("(Intercept)", colnames(genotype))
+  if (any(int_flag)) genotype <- genotype[, !int_flag, drop = FALSE]
   w <- as.vector(model.weights(m))
-  y <- model.response(m)
-
-  model_train <- caret::train(x, y, weights = w, ...)
+  env <- model.response(m)
+  
+  model_train <- caret::train(x=genotype, y=env, weights = w, ...)
   model_train$terms <- Terms
-  model_train$coefnames <- colnames(x)
+  model_train$coefnames <- colnames(genotype)
   model_train$call <- match.call()
   model_train$na.action <- attr(m, "na.action")
   model_train$contrasts <- cons
@@ -147,7 +148,6 @@ m <- match.call(expand.dots = FALSE)
   class(model_train) <- c("DeepGenomeScan", "DeepGenomeScan.formula")
   model_train
 }
-
 
 DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
                                  
