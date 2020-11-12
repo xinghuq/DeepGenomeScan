@@ -8,6 +8,7 @@
 
 DeepGenomeScan.default=function(genotype, env,method = "mlp",
                                 metric="RMSE",
+                                preProcess = NULL,
                                 trControl =trainControl(## 5-fold CV, repeat 5 times
                                   method = "repeatedcv",
                                   number = 5,
@@ -17,17 +18,18 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
   model_train=caret::train(x=genotype,
                            y=env,
                            method = method,
-                           ..., 
+                           preProcess = preProcess,
                            metric =metric ,
                            trControl = trControl,
-                           tuneLength = tuneLength)
+                           tuneLength = tuneLength,...)
   class(model_train)="DeepGenomeScan"
   return(model_train)  
   
   }
 
-DeepGenomeScan.default1=function(genotype, env,method = "mlp",
+DeepGenomeScan.CNN=function(genotype, env,method = "mlp",
                         metric = "RMSE",
+                         preProcess = NULL,
                         trControl = trainControl(## 5-fold CV, repeat 5 times
                           method = "repeatedcv",
                           number = 5,
@@ -39,10 +41,10 @@ DeepGenomeScan.default1=function(genotype, env,method = "mlp",
     model_train=caret::train(x=genotype,
                                 y=env,
                              method = method,
-                             ..., 
+                             preProcess = preProcess,
                              metric =metric ,
                              trControl = trControl,
-                             tuneLength = tuneLength)
+                             tuneLength = tuneLength, ... )
   
   
   if (method!= "CNN_sgd" | "*Keras" | importance =="permutation" |"NULL_model")
@@ -89,9 +91,9 @@ DeepGenomeScan.default1=function(genotype, env,method = "mlp",
   return(model_train)
 }
 
-DeepGenomeScan.formula=function(form, data,  weights = NULL, subset = NULL, na.action = na.fail, contrasts = NULL,...){
+DeepGenomeScan.formula=function(form, data,...){
 
-  model_train=caret::train(form, data, ...)
+  model_train=caret::train(form=form, data=data, ...)
   class(model_train)="DeepGenomeScan"
   return(model_train)
 }
@@ -101,11 +103,10 @@ DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
                                  trControl = trainControl(),
                                  
                                  tuneLength = ifelse(trControl$method == "none", 1, 3),...){
-  model_train=caret::train(genotype,data, method = method,
-                           ..., 
-                           metric =metric ,
+  model_train=caret::train(x=genotype,data=data, method = method,
+                            metric =metric ,
                            trControl = trControl,
-                           tuneLength = tuneLength)
+                           tuneLength = tuneLength, ...)
   class(model_train)="DeepGenomeScan"
   return(model_train)
 }
@@ -118,9 +119,9 @@ DeepGenomeScan.recipe=function(genotype, data, method = "mlp", metric = "RMSE",
 
 DeepGenomeScan.keras=function(genotype, env,method=method,
                         metric = "MAE",## "Accuracy", "RMSE","Rsquared"
-                        tuneLength = 11, ### number of parameter combinations
+                        preProcess = NULL,
+                          tuneLength = 11, ### number of parameter combinations
                         # tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100
-                       
                         trControl = trainControl(## 5-fold CV, repeat 5 times
                           method = "repeatedcv",
                           number = 5,
@@ -132,6 +133,7 @@ DeepGenomeScan.keras=function(genotype, env,method=method,
  DLmodel<- caret::train(x=genotype,y=env,
                                  method=method,
                                  metric = metric,## "Accuracy", "RMSE","Rsquared"
+                        preProcess = preProcess,
                                  tuneLength = tuneLength, ### 11 tunable parameters 11^2
                                  # tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100
                                  ...,
