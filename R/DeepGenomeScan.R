@@ -14,24 +14,24 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
                                   number = 5,
                                   ## repeated 5 times
                                   repeats = 5,search = "random"),
-                                 tuneLength = 10,...){ 
-    
-    if(is.null(colnames(x)))
-    stop("Please use column names for `x`", call. = FALSE)
-
-  if(is.character(y)) y <- as.factor(y)
-
-  if( !is.numeric(y) & !is.factor(y) ){
+                                tuneLength = 10,...){ 
+  
+  if(is.null(colnames(genotype)))
+    stop("Please use column names for `genotype`", call. = FALSE)
+  
+  if(is.character(env)) env <- as.factor(env)
+  
+  if( !is.numeric(env) & !is.factor(env) ){
     msg <- paste("Please make sure that the outcome column is a factor or numeric .",
                  "The class(es) of the column:",
-                 paste0("'", class(y), "'", collapse = ", "))
-
+                 paste0("'", class(env), "'", collapse = ", "))
+    
     stop(msg, call. = FALSE )
   }
-
-     if(any(class(x) == "data.table")) x <- as.data.frame(x, stringsAsFactors = TRUE)
-  check_dims(x = x, y = y)
-  n <- if(class(y)[1] == "Surv") nrow(y) else length(y)
+  
+  if(any(class(genotype) == "data.table")) genotype <- as.data.frame(genotype, stringsAsFactors = TRUE)
+  check_dims(genotype = genotype, env = env)
+  n <- if(class(env)[1] == "Surv") nrow(env) else length(env)
   model_train=caret::train(x=genotype,
                            y=env,
                            method = method,
@@ -41,7 +41,7 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
                            tuneLength = tuneLength,...)
   return(model_train)  
   
-  }
+}
 
 DeepGenomeScan.CNN=function(genotype, env,method = "mlp",
                         metric = "RMSE",
