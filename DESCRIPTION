@@ -14,7 +14,7 @@ SystemRequirements: GNU make
 URL: https://github.com/xinghuq/DeepGenomeScan
 BugReports: https://github.com/xinghuq/DeepGenomeScan/issues
 biocViews:
-Imports: lfda,SNPRelate,DA,KLFDAPC,caret,robust,qvalue,NeuralNetTools,RSNNS,neuralnet,FCNN4R,h2o,keras,kerasR
+Imports: lfda,SNPRelate,DA,KLFDAPC,caret,robust,qvalue,NeuralNetTools
 VignetteBuilder: knitr
 NeedsCompilation: no
 RoxygenNote: 6.1.1
