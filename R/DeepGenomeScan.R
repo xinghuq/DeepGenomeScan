@@ -30,8 +30,7 @@ DeepGenomeScan.default=function(genotype, env,method = "mlp",
   }
   
   if(any(class(genotype) == "data.table")) genotype <- as.data.frame(genotype, stringsAsFactors = TRUE)
-  check_dims(genotype = genotype, env = env)
-  n <- if(class(env)[1] == "Surv") nrow(env) else length(env)
+ 
   model_train=caret::train(x=genotype,
                            y=env,
                            method = method,
@@ -111,7 +110,7 @@ DeepGenomeScan.formula=function(form, data,...){
   if (is.matrix(eval.parent(m$data)))  m$data <- as.data.frame(data, stringsAsFactors = TRUE)
   m$... <- m$contrasts <- NULL
   
-  check_na_conflict(match.call(expand.dots = TRUE))
+
   
   ## Look for missing `na.action` in call. To make the default (`na.fail`)
   ## recognizable by `eval.parent(m)`, we need to add it to the call
