@@ -86,7 +86,7 @@
 <div id="deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="anchor"></a>DeepGenomeScan : A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-Wide Association Studies (GWAS)</h2>
-<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic learning and computational design integrating deep learning (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)), robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. The package use the tensorflow as the backend. The design makes the implemention user-friendly. Users can adopt the package’s framework to study various ecological and evolutionary questions, but not only constraining in biology field.</p>
+<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic computational framework integrating different neural network architectures (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)) and robust resampling methods, as well as the Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting signatures of natural selection and performing omics-based genome-wide association studies, such as GWAS, PWAS, TWAS, MWAS. The design makes the implemention user-friendly. It is compatible with most self-defined machine learning models (the self-defined models shuold be complete, including tunable parameters, fitted model, predicted model, examples can be found in our tutorial). Users can adopt the package’s framework to study various evolutionary questions.</p>
 </div>
 <div id="install-packages" class="section level2">
 <h2 class="hasAnchor">
@@ -102,15 +102,18 @@
 <h4 class="hasAnchor">
 <a href="#note-environment-requirements-python-should-be-installed-and-the-python-package-of-keras-and-tensorflow-should-also-be-installed-and-work-properly-with-the-system" class="anchor"></a>Note: Environment requirements: python should be installed and the python package of Keras and Tensorflow should also be installed and work properly with the system</h4>
 <div class="sourceCode"><pre class="downlit">
+<span class="co">###DA and KLFDAPC are used for SpGenomeScan</span>
+
+ <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"DA"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+ 
+  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"xinghuq/DA"</span><span class="op">)</span>
+
 <span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"KLFDAPC"</span><span class="op">)</span>
 
  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"KLFDAPC"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 
   <span class="fu">devtools</span><span class="fu">::</span><span class="fu">Install_github</span><span class="op">(</span><span class="st">"xinghuq/KLFDAPC"</span><span class="op">)</span>
   
- <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"DA"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
- 
-  <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"xinghuq/DA"</span><span class="op">)</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"keras"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 
@@ -137,31 +140,18 @@ reticulate<span class="op">::</span><span class="kw">use_python</span>(<span cla
 checking <span class="cf">if</span> Tensorflow works properly
 K0=keras<span class="op">::</span><span class="kw">backend</span>()</code></pre></div>
 </div>
-<div id="library" class="section level3">
+<div id="loading-library" class="section level3">
 <h3 class="hasAnchor">
-<a href="#library" class="anchor"></a>library</h3>
+<a href="#loading-library" class="anchor"></a>loading library</h3>
 <div class="sourceCode"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/xinghuq/DeepGenomeScan">DeepGenomeScan</a></span><span class="op">)</span></pre></div>
-<pre><code>## Warning: replacing previous import 'keras::to_categorical' by
-## 'kerasR::to_categorical' when loading 'DeepGenomeScan'</code></pre>
-<pre><code>## Warning: replacing previous import 'keras::text_to_word_sequence' by
-## 'kerasR::text_to_word_sequence' when loading 'DeepGenomeScan'</code></pre>
-<pre><code>## Warning: replacing previous import 'keras::normalize' by
-## 'kerasR::normalize' when loading 'DeepGenomeScan'</code></pre>
-<pre><code>## Warning: replacing previous import 'keras::pad_sequences' by
-## 'kerasR::pad_sequences' when loading 'DeepGenomeScan'</code></pre>
-<pre><code>## Warning: replacing previous import 'caret::confusionMatrix' by
-## 'RSNNS::confusionMatrix' when loading 'DeepGenomeScan'</code></pre>
-<pre><code>## Warning: replacing previous import 'caret::train' by 'RSNNS::train' when
-## loading 'DeepGenomeScan'</code></pre>
-<div class="sourceCode"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span><span class="co">### for ML calling functions and performance estimation</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com">keras</a></span><span class="op">)</span> <span class="co">### for DL</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/xinghuq/DeepGenomeScan">"DeepGenomeScan"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/topepo/caret/">"caret"</a></span><span class="op">)</span><span class="co">### for ML calling functions and performance estimation</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://keras.rstudio.com">"keras"</a></span><span class="op">)</span> <span class="co">### for DL</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/tensorflow">"tensorflow"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/zachmayer/caretEnsemble">"caretEnsemble"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/statsmaths/kerasR">kerasR</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/statsmaths/kerasR">"kerasR"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/cbergmeir/RSNNS">"RSNNS"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">NeuralNetTools</span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"NeuralNetTools"</span><span class="op">)</span></pre></div>
 </div>
 <div id="example" class="section level3">
 <h3 class="hasAnchor">
@@ -193,7 +183,7 @@ K0=keras<span class="op">::</span><span class="kw">backend</span>()</code></pre>
 <h3 class="hasAnchor">
 <a href="#deepgenomescan-with-mlp-model" class="anchor"></a>DeepGenomeScan with “mlp” model</h3>
 <div class="sourceCode"><pre class="downlit">
-<span class="va">h2o_mlp</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">genotype_norm</span><span class="op">)</span>,<span class="va">env</span><span class="op">$</span><span class="va">envir1</span>,
+<span class="va">GSmlp</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">genotype_norm</span><span class="op">)</span>,<span class="va">env</span><span class="op">$</span><span class="va">envir1</span>,
                                   method<span class="op">=</span><span class="st">"mlp"</span>,
                                   metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
                                   tuneLength <span class="op">=</span> <span class="fl">10</span>, <span class="co">### 11 tunable parameters 11^2</span>
@@ -201,12 +191,17 @@ K0=keras<span class="op">::</span><span class="kw">backend</span>()</code></pre>
                                   trControl <span class="op">=</span> <span class="va">econtrol1</span><span class="op">)</span>
 
 <span class="co">#### varIMP for SNPs</span>
-<span class="va">out</span><span class="op">=</span><span class="fu"><a href="../reference/varImp.html">varImp</a></span><span class="op">(</span><span class="va">h2o_mlp</span>,scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
+<span class="va">out</span><span class="op">=</span><span class="fu"><a href="../reference/varImp.html">varImp</a></span><span class="op">(</span><span class="va">GSmlp</span>,scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 <div id="plot-the-snp-importance-scores" class="section level5">
 <h5 class="hasAnchor">
 <a href="#plot-the-snp-importance-scores" class="anchor"></a>Plot the SNP importance scores</h5>
 <div class="sourceCode"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">Overall</span>,  ylab<span class="op">=</span><span class="st">"SNP importance"</span><span class="op">)</span></pre></div>
+<span class="co">#### Plot only the importance, remember to scan all environmnet factors and use DLqvalue function to convert the multi-effect importance values to q-values</span>
+<span class="co">### here is only plot importance of an example of using one environment factor</span>
+ <span class="va">scaled_imp</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/RSNNS/man/normalizeData.html">normalizeData</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">importance</span><span class="op">$</span><span class="va">Overall</span>,type <span class="op">=</span> <span class="st">"0_1"</span><span class="op">)</span>
+<span class="va">SNPimp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span>, MLP<span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/H2OFrame.html">log10</a></span><span class="op">(</span><span class="va">scaled_imp</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span><span class="op">(</span>y<span class="op">=</span><span class="op">-</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">MLP</span>,x<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000L</span>,  ylab<span class="op">=</span><span class="st">"SNP importance"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="st">"blue"</span><span class="op">)</span></pre></div>
 <p>Welcome any <a href="https://github.com/xinghuq/DeepGenomeScan/issues">feedback</a> and <a href="https://github.com/xinghuq/DeepGenomeScan/pulls">pull request</a>.</p>
 </div>
 </div>

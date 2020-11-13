@@ -78,33 +78,33 @@
 <div id="deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="anchor"></a>DeepGenomeScan : A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-Wide Association Studies (GWAS)</h2>
-<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic learning and computational design integrating deep learning (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)), robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. The package use the tensorflow as the backend. The design makes the implemention user-friendly. Users can adopt the package’s framework to study various ecological and evolutionary questions, but not only constraining in biology field.</p>
+<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic computational framework integrating different neural network architectures (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)) and robust resampling methods, as well as the Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting signatures of natural selection and performing omics-based genome-wide association studies, such as GWAS, PWAS, TWAS, MWAS. The design makes the implemention user-friendly. It is compatible with most self-defined machine learning models (the self-defined models shuold be complete, including tunable parameters, fitted model, predicted model, examples can be found in our tutorial). Users can adopt the package’s framework to study various evolutionary questions.</p>
 </div>
 <div id="install-packages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-packages" class="anchor"></a>Install packages</h2>
-<pre class="{r}"><code><a href="https://github.com/r-lib/devtools">
-library("devtools")
-
+<pre class="{r}"><code><a href="https://github.com/r-lib/devtools">library("devtools")
 devtools::install_github("xinghuq/DeepGenomeScan")
-
-devtools::install_github("xinghuq/CaretPlus/pkg/caret")
-</a></code></pre>
+devtools::install_github("xinghuq/CaretPlus/pkg/caret")</a></code></pre>
 <div id="dependencies-and-environment-requirements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies-and-environment-requirements" class="anchor"></a>Dependencies and environment requirements</h3>
 <div id="note-environment-requirements-python-should-be-installed-and-the-python-package-of-keras-and-tensorflow-should-also-be-installed-and-work-properly-with-the-system" class="section level4">
 <h4 class="hasAnchor">
 <a href="#note-environment-requirements-python-should-be-installed-and-the-python-package-of-keras-and-tensorflow-should-also-be-installed-and-work-properly-with-the-system" class="anchor"></a>Note: Environment requirements: python should be installed and the python package of Keras and Tensorflow should also be installed and work properly with the system</h4>
-<pre class="{r}"><code><a href="https://github.com/xinghuq/KLFDAPC">requireNamespace("KLFDAPC")
+<pre class="{r}"><code>
+###DA and KLFDAPC are used for SpGenomeScan
+
+ if (!requireNamespace("DA", quietly=TRUE))
+ 
+  devtools::install_github("xinghuq/DA")
+
+requireNamespace("KLFDAPC")
 
  if (!requireNamespace("KLFDAPC", quietly=TRUE))
 
   devtools::Install_github("xinghuq/KLFDAPC")
   
- if (!requireNamespace("DA", quietly=TRUE))
- 
-  devtools::install_github("xinghuq/DA")
 
 if (!requireNamespace("keras", quietly=TRUE))
 
@@ -116,35 +116,34 @@ if (!requireNamespace("keras", quietly=TRUE))
  if (!requireNamespace("kerasR", quietly=TRUE))
  
   install.packages("kerasR")
-</a></code></pre>
+</code></pre>
 </div>
 </div>
 <div id="checking-the-python-environment" class="section level3">
 <h3 class="hasAnchor">
 <a href="#checking-the-python-environment" class="anchor"></a>Checking the python environment</h3>
-<pre class="{r}"><code>
-library("rappdirs")
+<pre class="{r}"><code>library("rappdirs")
 library("reticulate")
 reticulate::use_python("/usr/bin/python3")
 library(caret) ### for ML calling functions and performance estimation, users should use the modified version at xinghuq/CaretPlus/caret instead of the original version
 library(keras)  
 library("tensorflow")
 
-##checking if Tensorflow works properly
+checking if Tensorflow works properly
 K0=keras::backend()
 </code></pre>
 </div>
-<div id="library" class="section level3">
+<div id="loading-library" class="section level3">
 <h3 class="hasAnchor">
-<a href="#library" class="anchor"></a>library</h3>
-<pre class="{r}"><code><a href="https://github.com/xinghuq/DeepGenomeScan">library(DeepGenomeScan)
-library(caret)### for ML calling functions and performance estimation
-library(keras) ### for DL
+<a href="#loading-library" class="anchor"></a>loading library</h3>
+<pre class="{r}"><code><a href="https://github.com/xinghuq/DeepGenomeScan">library("DeepGenomeScan")
+library("caret")### for ML calling functions and performance estimation
+library("keras") ### for DL
 library("tensorflow")
 library("caretEnsemble")
-library(kerasR)
+library("kerasR")
 library("RSNNS")
-library(NeuralNetTools)
+library("NeuralNetTools")
 </a></code></pre>
 </div>
 <div id="example" class="section level3">
@@ -154,33 +153,29 @@ library(NeuralNetTools)
 <div id="preparing-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#preparing-data" class="anchor"></a>Preparing data</h3>
-<pre class="{r}"><code>
-f &lt;- system.file('extdata',package='DeepGenomeScan')
+<pre class="{r}"><code>f &lt;- system.file('extdata',package='DeepGenomeScan')
 infile &lt;- file.path(f, "sim1.csv")
 sim_example=read.csv(infile)
 genotype=sim_example[,-c(1:14)]
 env=sim_example[,2:11]
-str(sim_example)
-</code></pre>
+str(sim_example)</code></pre>
 </div>
 <div id="setting-the-resampling-method" class="section level3">
 <h3 class="hasAnchor">
 <a href="#setting-the-resampling-method" class="anchor"></a>Setting the resampling method</h3>
-<pre class="{r}"><code>
-econtrol1 &lt;- trainControl(## 5-fold CV, repeat 5 times
+<pre class="{r}"><code>econtrol1 &lt;- trainControl(## 5-fold CV, repeat 5 times
   method = "adaptive_cv",
   number = 5,
   ## repeated ten times
   repeats = 5,search = "random")
 set.seed(999)
-options(warn=-1
-</code></pre>
+options(warn=-1</code></pre>
 </div>
 <div id="deepgenomescan-with-mlp-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#deepgenomescan-with-mlp-model" class="anchor"></a>DeepGenomeScan with “mlp” model</h3>
 <pre class="{r}"><code>
-h2o_mlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
+GSmlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
                                   method="mlp",
                                   metric = "RMSE",## "Accuracy", "RMSE","Rsquared","MAE"
                                   tuneLength = 10, ### 11 tunable parameters 11^2
@@ -188,15 +183,18 @@ h2o_mlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
                                   trControl = econtrol1)
 
 #### varIMP for SNPs
-
-out=varImp(h2o_mlp,scale = FALSE)
+out=varImp(GSmlp,scale = FALSE)
 </code></pre>
 <div id="plot-the-snp-importance-scores" class="section level5">
 <h5 class="hasAnchor">
 <a href="#plot-the-snp-importance-scores" class="anchor"></a>Plot the SNP importance scores</h5>
-<pre class="{r}"><code><a href="https://rdrr.io/r/graphics/plot.html">
-plot(out$Overall,  ylab="SNP importance")
-</a></code></pre>
+<pre class="{r}"><code>#### Plot only the importance, remember to scan all environmnet factors and use DLqvalue function to convert the multi-effect importance values to q-values
+### here is only plot importance of an example of using one environment factor
+ scaled_imp=normalizeData(out$importance$Overall,type = "0_1")
+SNPimp&lt;-data.frame(index = c(1:1000), MLP= -log10(scaled_imp))
+plot(y=-SNPimp$MLP,x=1:1000L,  ylab="SNP importance")
+abline(h=2, col="blue")
+</code></pre>
 <p>Welcome any <a href="https://github.com/xinghuq/DeepGenomeScan/issues">feedback</a> and <a href="https://github.com/xinghuq/DeepGenomeScan/pulls">pull request</a>.</p>
 </div>
 </div>

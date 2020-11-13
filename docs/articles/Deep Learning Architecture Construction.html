@@ -85,28 +85,16 @@
 
     
     
-<div id="deepgenomescan-for-detection-of-natural-selection" class="section level2">
+<div id="deepgenomescan-for-detecting-natural-selection" class="section level2">
 <h2 class="hasAnchor">
-<a href="#deepgenomescan-for-detection-of-natural-selection" class="anchor"></a>DeepGenomeScan for detection of natural selection</h2>
-<p>DeepGenomeScan implements the genome scan and genome-wide association studies via deep learing. DeepGenomeScan particularly good at detecting the subtle and weak signatures that are hard to identify by the linear approaches. DeepGenomeScan has several ready-to-use models constructed with typical architectures supported by different backends. As deep neural networks are highly computationally costly, choosing or constructing the architecture of deep learning depends on users’ data and computation demand. Therefore, if you know well about R or good at programming, we recommend you constructing your own model based on your demand.</p>
+<a href="#deepgenomescan-for-detecting-natural-selection" class="anchor"></a>DeepGenomeScan for detecting natural selection</h2>
+<p>DeepGenomeScan implements the genome scan and genome-wide association studies via deep learing. DeepGenomeScan particularly good at detecting the subtle and weak signatures that are hard to identify by the common linear approaches, such as linear model, generalized linear model (GLM), PCA, RDA, LFMM, etc. DeepGenomeScan has several ready-to-use models constructed with typical architectures supported by different backends. As deep neural networks are highly computationally costly, choosing or constructing the architecture of deep learning depends on users’ data and computation demand. Therefore, if you know well about R or good at programming, we recommend you constructing your own model based on your demand.</p>
 <p>In what follows, we provide the step-by-step deep learning architecture construction and genome scan implementation using DeepGenomeScan.</p>
 <p>Install packages and dependences</p>
 <div class="sourceCode"><pre class="downlit">
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"DeepGenomeScan"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"xinghuq/DeepGenomeScan"</span><span class="op">)</span>
-<span class="co"># Warning: replacing previous import 'keras::to_categorical' by</span>
-<span class="co"># 'kerasR::to_categorical' when loading 'DeepGenomeScan'</span>
-<span class="co"># Warning: replacing previous import 'keras::text_to_word_sequence' by</span>
-<span class="co"># 'kerasR::text_to_word_sequence' when loading 'DeepGenomeScan'</span>
-<span class="co"># Warning: replacing previous import 'keras::normalize' by</span>
-<span class="co"># 'kerasR::normalize' when loading 'DeepGenomeScan'</span>
-<span class="co"># Warning: replacing previous import 'keras::pad_sequences' by</span>
-<span class="co"># 'kerasR::pad_sequences' when loading 'DeepGenomeScan'</span>
-<span class="co"># Warning: replacing previous import 'caret::confusionMatrix' by</span>
-<span class="co"># 'RSNNS::confusionMatrix' when loading 'DeepGenomeScan'</span>
-<span class="co"># Warning: replacing previous import 'caret::train' by 'RSNNS::train' when</span>
-<span class="co"># loading 'DeepGenomeScan'</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"KLFDAPC"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"xinghuq/KLFDAPC"</span><span class="op">)</span>
@@ -125,138 +113,34 @@
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"RNNS"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"RNNS"</span><span class="op">)</span>
-<span class="co"># Warning: package 'RNNS' is not available (for R version 3.6.1)</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"RNNS"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"RNNS"</span><span class="op">)</span>
-<span class="co"># Warning: package 'RNNS' is not available (for R version 3.6.1)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"RNNS"</span><span class="op">)</span></pre></div>
 <p>Our package incorporates several most commonly used deep learning libaries, such as Tensorflow, keras, RNNS, H2o, FCNN4R. This tutorial will show you how to construct your own deep learning model, tune the model, and get the SNP importance scores.</p>
 <div class="sourceCode"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/xinghuq/DeepGenomeScan">DeepGenomeScan</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span><span class="co">### for ML calling functions and performance estimation</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://keras.rstudio.com">keras</a></span><span class="op">)</span> <span class="co">### for DL</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/tensorflow">"tensorflow"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/zachmayer/caretEnsemble">"caretEnsemble"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/tensorflow">tensorflow</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/zachmayer/caretEnsemble">caretEnsemble</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/statsmaths/kerasR">kerasR</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/cbergmeir/RSNNS">"RSNNS"</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">NeuralNetTools</span><span class="op">)</span></pre></div>
 <div id="preparing-example-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#preparing-example-data" class="anchor"></a>Preparing example data</h3>
-<p>The data used here is a single simulated data containing 640 individuals with 1000 SNPs that assumed under the environmental selection. There are 10 environmental factors acting on these population with different gradients. Details about the simulation and data can be found in Capblancq et al. 2018 (<a href="https://doi.org/10.1111/1755-0998.12906" class="uri">https://doi.org/10.1111/1755-0998.12906</a>).</p>
+<p>The data used here is a single simulated data containing 640 individuals with 1000 SNPs that is assumed under the environmnetal selection. There are 10 environmental factors selecting 3 QTLs on these population with different gradients. Details about the simulated data can be found in Capblancq et al. 2018 (<a href="https://doi.org/10.1111/1755-0998.12906" class="uri">https://doi.org/10.1111/1755-0998.12906</a>).</p>
 <div class="sourceCode"><pre class="downlit">
 <span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">'extdata'</span>,package<span class="op">=</span><span class="st">'DeepGenomeScan'</span><span class="op">)</span>
 <span class="va">infile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="va">f</span>, <span class="st">"sim1.csv"</span><span class="op">)</span>
 <span class="va">sim_example</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">infile</span><span class="op">)</span>
 <span class="va">genotype</span><span class="op">=</span><span class="va">sim_example</span><span class="op">[</span>,<span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span><span class="op">]</span>
 <span class="va">env</span><span class="op">=</span><span class="va">sim_example</span><span class="op">[</span>,<span class="fl">2</span><span class="op">:</span><span class="fl">11</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">sim_example</span><span class="op">)</span>
-<span class="co"># 'data.frame': 640 obs. of  1014 variables:</span>
-<span class="co">#  $ pop_name: num  0 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="co">#  $ envir1  : num  2.62 2.62 2.62 2.62 2.62 ...</span>
-<span class="co">#  $ envir2  : num  3.41 3.41 3.41 3.41 3.41 ...</span>
-<span class="co">#  $ envir3  : num  1.82 1.82 1.82 1.82 1.82 ...</span>
-<span class="co">#  $ envir4  : num  2.09 2.09 2.09 2.09 2.09 ...</span>
-<span class="co">#  $ envir5  : num  2.65 2.65 2.65 2.65 2.65 ...</span>
-<span class="co">#  $ envir6  : num  1.92 1.92 1.92 1.92 1.92 ...</span>
-<span class="co">#  $ envir7  : num  2.75 2.75 2.75 2.75 2.75 ...</span>
-<span class="co">#  $ envir8  : num  -0.529 -0.529 -0.529 -0.529 -0.529 ...</span>
-<span class="co">#  $ envir9  : num  3.56 3.56 3.56 3.56 3.56 ...</span>
-<span class="co">#  $ envir10 : num  8.36 8.36 8.36 8.36 8.36 ...</span>
-<span class="co">#  $ qtrait1 : num  8.52 6.7 6.91 7 8.56 ...</span>
-<span class="co">#  $ qtrait2 : num  5.7 6.17 4.43 10.1 6.36 ...</span>
-<span class="co">#  $ qtrait3 : num  7.04 1.71 8.22 8.1 8.7 ...</span>
-<span class="co">#  $ X       : int  2 2 1 0 1 2 0 1 0 0 ...</span>
-<span class="co">#  $ X.1     : int  1 0 1 0 0 1 0 1 0 1 ...</span>
-<span class="co">#  $ X.2     : int  1 1 0 1 0 1 0 1 2 2 ...</span>
-<span class="co">#  $ X.3     : int  2 0 1 0 1 0 1 1 1 0 ...</span>
-<span class="co">#  $ X.4     : int  1 0 2 1 2 1 1 2 1 1 ...</span>
-<span class="co">#  $ X.5     : int  1 2 2 0 1 1 0 1 2 1 ...</span>
-<span class="co">#  $ X.6     : int  1 1 1 1 1 1 0 1 1 1 ...</span>
-<span class="co">#  $ X.7     : int  2 0 1 2 1 2 1 2 2 1 ...</span>
-<span class="co">#  $ X.8     : int  2 1 1 1 1 2 1 1 2 0 ...</span>
-<span class="co">#  $ X.9     : int  2 1 2 0 1 1 1 1 1 1 ...</span>
-<span class="co">#  $ X.10    : int  0 1 1 1 1 1 0 1 1 1 ...</span>
-<span class="co">#  $ X.11    : int  2 1 2 0 1 2 0 1 2 1 ...</span>
-<span class="co">#  $ X.12    : int  1 0 1 1 1 0 1 2 1 0 ...</span>
-<span class="co">#  $ X.13    : int  1 2 1 1 1 0 1 0 1 0 ...</span>
-<span class="co">#  $ X.14    : int  1 1 1 1 0 0 1 0 1 0 ...</span>
-<span class="co">#  $ X.15    : int  0 2 1 1 1 1 1 1 1 0 ...</span>
-<span class="co">#  $ X.16    : int  2 0 2 1 1 1 1 1 1 2 ...</span>
-<span class="co">#  $ X.17    : int  2 1 1 0 1 2 1 2 0 2 ...</span>
-<span class="co">#  $ X.18    : int  1 1 0 0 0 1 0 1 1 2 ...</span>
-<span class="co">#  $ X.19    : int  1 2 1 2 1 1 2 2 1 0 ...</span>
-<span class="co">#  $ X.20    : int  0 1 1 0 1 1 1 0 1 1 ...</span>
-<span class="co">#  $ X.21    : int  1 1 0 1 2 0 1 0 1 2 ...</span>
-<span class="co">#  $ X.22    : int  1 2 1 1 0 1 1 2 1 1 ...</span>
-<span class="co">#  $ X.23    : int  1 2 0 1 1 2 0 1 0 1 ...</span>
-<span class="co">#  $ X.24    : int  1 2 2 1 0 1 2 0 1 1 ...</span>
-<span class="co">#  $ X.25    : int  2 1 1 0 2 1 2 1 1 1 ...</span>
-<span class="co">#  $ X.26    : int  2 1 1 1 2 2 1 2 1 2 ...</span>
-<span class="co">#  $ X.27    : int  0 1 2 1 2 2 2 2 1 1 ...</span>
-<span class="co">#  $ X.28    : int  1 0 1 2 2 1 2 1 1 1 ...</span>
-<span class="co">#  $ X.29    : int  0 1 1 1 1 1 2 2 2 1 ...</span>
-<span class="co">#  $ X.30    : int  0 2 1 1 0 1 2 1 1 1 ...</span>
-<span class="co">#  $ X.31    : int  0 1 1 1 1 0 2 1 2 1 ...</span>
-<span class="co">#  $ X.32    : int  0 0 1 1 1 1 1 0 1 2 ...</span>
-<span class="co">#  $ X.33    : int  1 1 1 1 1 2 0 0 2 2 ...</span>
-<span class="co">#  $ X.34    : int  1 1 0 0 0 1 0 1 0 1 ...</span>
-<span class="co">#  $ X.35    : int  1 2 1 1 2 1 1 2 1 1 ...</span>
-<span class="co">#  $ X.36    : int  0 1 0 0 0 1 1 1 0 1 ...</span>
-<span class="co">#  $ X.37    : int  1 2 2 1 2 1 2 0 1 1 ...</span>
-<span class="co">#  $ X.38    : int  2 1 1 1 1 2 0 1 1 1 ...</span>
-<span class="co">#  $ X.39    : int  0 1 2 1 1 0 2 1 0 1 ...</span>
-<span class="co">#  $ X.40    : int  2 1 2 0 2 1 1 1 1 1 ...</span>
-<span class="co">#  $ X.41    : int  1 1 1 2 1 0 1 1 0 1 ...</span>
-<span class="co">#  $ X.42    : int  1 2 2 1 1 1 2 1 2 2 ...</span>
-<span class="co">#  $ X.43    : int  2 2 0 2 1 1 1 1 1 2 ...</span>
-<span class="co">#  $ X.44    : int  1 1 2 1 2 0 1 0 0 0 ...</span>
-<span class="co">#  $ X.45    : int  1 1 1 0 0 1 2 1 1 0 ...</span>
-<span class="co">#  $ X.46    : int  0 1 0 0 1 1 0 1 1 2 ...</span>
-<span class="co">#  $ X.47    : int  1 1 1 2 1 2 1 2 1 0 ...</span>
-<span class="co">#  $ X.48    : int  2 2 1 2 1 1 1 2 0 2 ...</span>
-<span class="co">#  $ X.49    : int  0 0 2 1 1 1 2 2 2 0 ...</span>
-<span class="co">#  $ X.50    : int  0 1 0 1 0 1 0 1 1 1 ...</span>
-<span class="co">#  $ X.51    : int  0 0 0 0 0 0 1 2 0 2 ...</span>
-<span class="co">#  $ X.52    : int  1 1 1 0 1 1 1 1 1 1 ...</span>
-<span class="co">#  $ X.53    : int  0 0 0 1 0 1 0 2 0 2 ...</span>
-<span class="co">#  $ X.54    : int  1 1 1 2 1 0 1 1 1 1 ...</span>
-<span class="co">#  $ X.55    : int  1 1 2 2 2 0 1 0 0 1 ...</span>
-<span class="co">#  $ X.56    : int  1 1 1 0 2 1 1 2 1 2 ...</span>
-<span class="co">#  $ X.57    : int  1 2 1 1 2 1 1 2 1 2 ...</span>
-<span class="co">#  $ X.58    : int  1 0 0 0 0 0 1 1 0 0 ...</span>
-<span class="co">#  $ X.59    : int  0 2 2 1 2 0 1 1 1 2 ...</span>
-<span class="co">#  $ X.60    : int  0 0 0 1 2 1 0 1 1 1 ...</span>
-<span class="co">#  $ X.61    : int  1 0 0 1 0 0 1 0 1 1 ...</span>
-<span class="co">#  $ X.62    : int  2 2 2 1 0 0 1 2 2 1 ...</span>
-<span class="co">#  $ X.63    : int  0 0 1 1 0 1 0 1 1 0 ...</span>
-<span class="co">#  $ X.64    : int  1 0 0 1 1 1 0 0 0 0 ...</span>
-<span class="co">#  $ X.65    : int  1 1 0 1 1 2 0 1 1 1 ...</span>
-<span class="co">#  $ X.66    : int  0 1 0 1 1 1 0 1 1 1 ...</span>
-<span class="co">#  $ X.67    : int  1 1 1 1 0 1 1 1 0 1 ...</span>
-<span class="co">#  $ X.68    : int  1 1 1 1 2 1 1 2 1 0 ...</span>
-<span class="co">#  $ X.69    : int  0 2 0 1 1 1 1 1 1 1 ...</span>
-<span class="co">#  $ X.70    : int  0 1 0 1 0 2 1 1 1 0 ...</span>
-<span class="co">#  $ X.71    : int  1 2 2 1 1 0 1 1 0 0 ...</span>
-<span class="co">#  $ X.72    : int  0 2 1 0 1 2 1 1 1 1 ...</span>
-<span class="co">#  $ X.73    : int  2 1 1 1 1 2 2 1 2 0 ...</span>
-<span class="co">#  $ X.74    : int  1 1 1 2 0 0 1 0 0 1 ...</span>
-<span class="co">#  $ X.75    : int  2 0 0 0 0 0 1 1 1 0 ...</span>
-<span class="co">#  $ X.76    : int  1 0 2 1 1 2 1 1 0 1 ...</span>
-<span class="co">#  $ X.77    : int  0 1 0 1 1 1 2 0 1 2 ...</span>
-<span class="co">#  $ X.78    : int  1 1 0 0 1 0 1 0 0 1 ...</span>
-<span class="co">#  $ X.79    : int  2 0 1 0 2 1 1 1 1 1 ...</span>
-<span class="co">#  $ X.80    : int  1 0 0 1 1 1 1 0 0 0 ...</span>
-<span class="co">#  $ X.81    : int  1 1 2 2 2 2 1 1 1 1 ...</span>
-<span class="co">#  $ X.82    : int  1 2 1 1 1 1 2 2 1 1 ...</span>
-<span class="co">#  $ X.83    : int  1 1 1 1 2 2 1 1 1 0 ...</span>
-<span class="co">#  $ X.84    : int  2 1 2 0 1 0 1 1 1 2 ...</span>
-<span class="co">#   [list output truncated]</span></pre></div>
+<span class="co">#str(sim_example)</span></pre></div>
 </div>
 <div id="basic-model-architecture-construction" class="section level3">
 <h3 class="hasAnchor">
 <a href="#basic-model-architecture-construction" class="anchor"></a>Basic model architecture construction</h3>
-<p>The principal steps for implementing user-defined model are, first constructing the model architecture and compiling the model to make sure the basic model works; and then next step integrating it to DeepGenomeScan framework. Now we construct a MLP model and complie it using keras first.</p>
+<p>The principal steps for implementing user-defined model are, first constructing the model architecture and compiling the model to make sure the basic model works; and then integrating the model to DeepGenomeScan framework. Below, we construct a MLP model and complie it using keras.</p>
 <div class="sourceCode"><pre class="downlit">
 <span class="co">###################################### example of MLP_keras_drop out##########################</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
@@ -310,8 +194,8 @@
 <h3 class="hasAnchor">
 <a href="#compiling-model-using-deepgenomescan" class="anchor"></a>Compiling model using DeepGenomeScan</h3>
 <p>Compiling the deep learning model using DeepGenomeScan requires user to store four key components for the model: 1.Model parameters and tuning values, 2.deep learning model architecture and fitted model, 3.model predict method/function or probability estimation (optional), 4.importance function.</p>
-<p>In terms of the (1) model parameters and tuning values, users should set their own model parameters, parameter labels, and tuning methods (grid or random search), the range of the parameter values if grid, or the rule to search the parameter space if random based on the architecture of the model. With respect to (2) deep learning model architecture and fitted model, users should put their compiled (working) model (including the fitted model) under the same data list. In addition, users should also write the predict function for model tuning and importance function for estimating SNP importance after the optimal model is returned. All these components should store according to the below instruction.</p>
-<p>Below we construct a MLP model and use DeepGenomeScan framework to compile it.</p>
+<p>In terms of the (1) model parameters and tuning values, users should set their own model parameters, parameter labels, tuning methods (grid or random search), and the range of the parameter values if using grid search or the rule to search the parameter space if using random search based on the architecture of the model. With respect to (2) deep learning model architecture and fitted model, users should put their compiled (working) model (including the fitted model) under the same data list. In addition, users should also write the predict function for model tuning and importance function for estimating SNP importance after the optimal model is returned. All these components should be stored/structured according to the below instruction.</p>
+<p>In what folllows, we construct a MLP model and use DeepGenomeScan framework to compile it.</p>
 </div>
 <div id="keras-example" class="section level3">
 <h3 class="hasAnchor">
@@ -497,7 +381,7 @@
 <span class="va">genotype_norm</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">genotype</span>,<span class="fl">2</span>,<span class="va">normalize</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">### Doing DeepGenomeScan parameter tuning </span>
-<span class="va">model_Keras_mlp</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span>x<span class="op">=</span><span class="op">(</span><span class="va">genotype_norm</span><span class="op">)</span>,y<span class="op">=</span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">envir1</span><span class="op">)</span>,
+<span class="va">model_Keras_mlp</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">genotype_norm</span>,<span class="va">env</span><span class="op">$</span><span class="va">envir1</span>,
                                 method<span class="op">=</span><span class="va">modelmlpkerasdropout</span>,
                                 metric <span class="op">=</span> <span class="st">"MAE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared"</span>
                                 tuneLength <span class="op">=</span> <span class="fl">10</span>, <span class="co">### number of tunable parameters to search, here this example uses just 10 for saving time. Users should set a large number in order to find a better model</span>
@@ -553,7 +437,7 @@
 
 <span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"MLP_Sim1_env1_test.RData"</span><span class="op">)</span>
 <span class="co">###################################### working end###############################################</span></pre></div>
-<p>This is a complete process for doing deep learing based genome scan using user-defined model. Because keras uses python tensorflow as the backend, we recommend users configuring the python tensorflow, keras that compatible with R before constructing this model.</p>
+<p>This is a complete process for doing deep learing based genome scan using user-defined model. Because keras uses python (tensorflow) as the backend, we recommend users configuring the python version of tensorflow and keras properly so that they are compatible with R before constructing this model.</p>
 <p>Below is a model constructed using RSNNS library.</p>
 </div>
 <div id="rsnns-example" class="section level3">
@@ -669,7 +553,7 @@
     <span class="va">model_RSNNS_mlp</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">genotype_norm</span><span class="op">)</span>,<span class="va">env</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span>,
                                method<span class="op">=</span><span class="va">modelRSNNSmlpdecay</span>,
                                metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
-                               tuneLength <span class="op">=</span> <span class="fl">50</span>, <span class="co">### search 50 parameter combinations</span>
+                               tuneLength <span class="op">=</span> <span class="fl">50</span>, <span class="co">### search 50 parameter combinations, users should increase the tune length to find a better model</span>
                                <span class="co"># tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100</span>
                                verbose<span class="op">=</span><span class="fl">0</span>,<span class="co"># verbose=1 is reporting the progress,o is sclience</span>
                                trControl <span class="op">=</span> <span class="va">econtrol1</span>,importance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -684,24 +568,27 @@
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
 
 
-<span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"Model_RSNNS_mlp_env1_sim_test_Final.RData"</span><span class="op">)</span></pre></div>
-<p>This implementation is also not fast, after model tuning, we estimated the SNP importance score that under the selection of 10 environmental factors.</p>
+<span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"Model_RSNNS_mlp_env1_sim_test.RData"</span><span class="op">)</span></pre></div>
+<p>This implementation is also not fast. After model tuning, we estimated the SNP importance score that under the selection of 10 environmental factors.</p>
 </div>
-<div id="ploting-manhattan-plot" class="section level3">
+<div id="plotting-manhattan-plot" class="section level3">
 <h3 class="hasAnchor">
-<a href="#ploting-manhattan-plot" class="anchor"></a>Ploting Manhattan plot</h3>
+<a href="#plotting-manhattan-plot" class="anchor"></a>Plotting Manhattan plot</h3>
 <div class="sourceCode"><pre class="downlit">
+<span class="co">####</span>
 
 <span class="va">Loci</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"Neutral"</span>, <span class="fl">1000</span><span class="op">)</span>
 <span class="va">Loci</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">11</span>,<span class="fl">21</span>,<span class="fl">31</span>,<span class="fl">41</span>,<span class="fl">51</span>,<span class="fl">61</span>,<span class="fl">71</span>,<span class="fl">81</span>,<span class="fl">91</span><span class="op">)</span><span class="op">]</span><span class="op">&lt;-</span><span class="st">"QTL1"</span>
 <span class="va">Loci</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101</span>,<span class="fl">111</span>,<span class="fl">121</span>,<span class="fl">131</span>,<span class="fl">141</span>,<span class="fl">151</span>,<span class="fl">161</span>,<span class="fl">171</span>,<span class="fl">181</span>,<span class="fl">191</span><span class="op">)</span><span class="op">]</span><span class="op">&lt;-</span><span class="st">"QTL2"</span>
 <span class="va">Loci</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">201</span>,<span class="fl">211</span>,<span class="fl">221</span>,<span class="fl">231</span>,<span class="fl">241</span>,<span class="fl">251</span>,<span class="fl">261</span>,<span class="fl">271</span>,<span class="fl">281</span>,<span class="fl">291</span><span class="op">)</span><span class="op">]</span><span class="op">&lt;-</span><span class="st">"QTL3"</span>
 
- <span class="va">scaled_imp</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/pkg/RSNNS/man/normalizeData.html">normalizeData</a></span><span class="op">(</span><span class="va">RSNNS_simimp1</span><span class="op">$</span><span class="va">importance</span>,type <span class="op">=</span> <span class="st">"0_1"</span><span class="op">)</span>
-<span class="va">SNPimp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span>, MLP<span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">scaled_imp</span><span class="op">)</span>,Loci<span class="op">=</span><span class="va">Loci</span><span class="op">)</span>
+<span class="co">### RSNNS_simimp is a dataframe containing all SNP importance values (10 importance for all SNPs) from 10 environmnetal factors, users should import the SNP importance into one dataset</span>
 
+<span class="va">SNPimpq</span><span class="op">=</span><span class="fu"><a href="../reference/DLqvalues.html">DLqvalues</a></span><span class="op">(</span><span class="va">RSSNS_simimp</span>,K<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
+<span class="va">SNPimp</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>index <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1000</span><span class="op">)</span>, MLP<span class="op">=</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">SNPimpq</span><span class="op">)</span>,Loci<span class="op">=</span><span class="va">Loci</span><span class="op">)</span>
 <span class="va">Selected_Loci</span><span class="op">=</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">==</span><span class="st">"Neutral"</span><span class="op">)</span><span class="op">]</span>
 
+<span class="co">## Plotting Manhattan plot</span>
 <span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">index</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">!=</span><span class="st">"Neutral"</span><span class="op">)</span><span class="op">]</span>, y<span class="op">=</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">MLP</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">!=</span><span class="st">"Neutral"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"gray83"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_point</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">index</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">==</span><span class="st">"Neutral"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/vector.html">as.vector</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">MLP</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">SNPimp</span><span class="op">$</span><span class="va">Loci</span><span class="op">==</span><span class="st">"Neutral"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, colour <span class="op">=</span> <span class="va">Selected_Loci</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
@@ -709,7 +596,7 @@
   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span>
 <span class="va">p1</span></pre></div>
-<p>Manhattan plot not show here because of time.</p>
+<p>Manhattan plot not show here because of exhaust time. Make sure increasing the tune length to find a good model.</p>
 </div>
 <div id="neuralnet-example" class="section level3">
 <h3 class="hasAnchor">
@@ -722,7 +609,6 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">neuraldat</span><span class="op">)</span> 
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span>
 
-<span class="co">### NeoralSen uses The importance of a given input is defined as the distribution of the derivatives of the output with respect to that input in each training data point.</span>
 <span class="co">####################</span>
 <span class="co">##custome two other activation functions, softplus and relu</span>
 
@@ -748,13 +634,13 @@
 <span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html">registerDoParallel</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span>
 <span class="va">multi_net1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e8</span>,rep<span class="op">=</span><span class="fl">1</span>, err.fct <span class="op">=</span> <span class="st">"sse"</span>,act.fct<span class="op">=</span><span class="st">"logistic"</span>,linear.output <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">### it takes within a minute to finish and converge using the older version.</span>
 
-<span class="va">multi_net</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e+11</span> ,rep<span class="op">=</span><span class="fl">1</span>, err.fct <span class="op">=</span> <span class="st">"sse"</span>,act.fct<span class="op">=</span><span class="va">softplus</span>,linear.output <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">### it takes within a minute to finish and converge using the older version.</span>
+<span class="va">multi_net2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e+11</span> ,rep<span class="op">=</span><span class="fl">1</span>, err.fct <span class="op">=</span> <span class="st">"sse"</span>,act.fct<span class="op">=</span><span class="va">softplus</span>,linear.output <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">### it takes within a minute to finish and converge using the older version.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/save.html">save</a></span><span class="op">(</span><span class="va">multi_net</span>,file <span class="op">=</span> <span class="st">"neuralnet_1_example_softplus.RData"</span><span class="op">)</span>
 
-<span class="va">multi_net</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e+11</span> ,rep<span class="op">=</span><span class="fl">1</span>, err.fct <span class="op">=</span> <span class="st">"sse"</span>,act.fct<span class="op">=</span><span class="va">customRelu</span>,linear.output <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">### it takes within a minute to finish and converge using the older version.</span>
+<span class="va">multi_net3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e+11</span> ,rep<span class="op">=</span><span class="fl">1</span>, err.fct <span class="op">=</span> <span class="st">"sse"</span>,act.fct<span class="op">=</span><span class="va">customRelu</span>,linear.output <span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span> <span class="co">### it takes within a minute to finish and converge using the older version.</span>
 
 <span class="co">### latest version can use relu </span>
-<span class="va">multi_net</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e9</span> ,rep<span class="op">=</span><span class="fl">1</span>, act.fct<span class="op">=</span><span class="st">"relu"</span>,output.act.fct<span class="op">=</span><span class="va">logistic</span>,linear.output <span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co">### some cases,takes longer, I do not know why since I installed the developement version</span>
+<span class="va">multi_net4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/neuralnet/man/neuralnet.html">neuralnet</a></span><span class="op">(</span><span class="va">simf</span>, algorithm<span class="op">=</span> <span class="st">"rprop+"</span>, data<span class="op">=</span><span class="va">sim_example</span>, hidden <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">9</span>,<span class="fl">10</span>,<span class="fl">11</span><span class="op">)</span> ,stepmax<span class="op">=</span><span class="fl">1e9</span> ,rep<span class="op">=</span><span class="fl">1</span>, act.fct<span class="op">=</span><span class="st">"relu"</span>,output.act.fct<span class="op">=</span><span class="va">logistic</span>,linear.output <span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co">### some cases,takes longer, I do not know why since I installed the developement version</span>
 <span class="fu"><a href="https://rdrr.io/pkg/NeuralNetTools/man/olden.html">olden</a></span><span class="op">(</span><span class="va">multi_net1</span>,bar_plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu">stopCluster</span><span class="op">(</span><span class="va">cl</span><span class="op">)</span>
@@ -1629,7 +1515,7 @@
   <span class="co">## repeated ten times</span>
   repeats <span class="op">=</span> <span class="fl">5</span>,search <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>
 <span class="va">genotype_norm</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/apply.html">apply</a></span><span class="op">(</span><span class="va">genotype</span>,<span class="fl">2</span>,<span class="va">normalize</span><span class="op">)</span><span class="op">)</span>
-<span class="va">model_Keras_CNN</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span>x<span class="op">=</span><span class="op">(</span><span class="va">genotype_norm</span><span class="op">)</span>,y<span class="op">=</span><span class="op">(</span><span class="va">env</span><span class="op">$</span><span class="va">envir1</span><span class="op">)</span>,
+<span class="va">model_Keras_CNN</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">genotype_norm</span>,<span class="va">env</span><span class="op">$</span><span class="va">envir1</span>,
                                  method<span class="op">=</span><span class="va">CNNsgd</span>,
                                  metric <span class="op">=</span> <span class="st">"MAE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared"</span>
                                  tuneLength <span class="op">=</span> <span class="fl">10</span>, <span class="co">### 11 tunable parameters 11^2</span>
@@ -1684,7 +1570,7 @@
 <span class="va">VarImps_nullcnn</span><span class="op">=</span><span class="va">Tensor_sim_imp_NULL_cnn</span><span class="op">$</span><span class="va">CNN_Decrease_acc</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/save.html">save.image</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"CNN_Sim1_env1_test.RData"</span><span class="op">)</span></pre></div>
-<p>We demonstrated how to construct, compile and implement deep learing based genome scan step by step using different libraries. These models are also ready-to-use in our DeepGenomeScan framework. Users just set the name of the method to choose the corresponding model. The models available can be found in our documentation and “DeepGenomeScan Models” section.</p>
+<p>We demonstrated how to construct, compile and implement deep learing based genome scan step by step using different libraries. These models are also ready-to-use in our DeepGenomeScan framework. Users just need to change “method” names to choose the corresponding model. The models available can be found in our documentation and “DeepGenomeScan Models” section.</p>
 </div>
 <div id="using-deepgenomescan-available-models" class="section level3">
 <h3 class="hasAnchor">
@@ -1703,15 +1589,15 @@
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">999</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>warn<span class="op">=</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span>
 
-<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">Y1</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">X2</span> <span class="op">+</span> <span class="va">X3</span>, method <span class="op">=</span> <span class="st">'mlpWeightDecayML'</span>, data <span class="op">=</span> <span class="va">neuraldat</span>, linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
+<span class="va">mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">genotype_norm</span>,<span class="va">env</span><span class="op">$</span><span class="va">envir1</span>,, method <span class="op">=</span> <span class="st">'mlpWeightDecayML'</span>, data <span class="op">=</span> <span class="va">neuraldat</span>, linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
              tuneLength <span class="op">=</span> <span class="fl">20</span>, <span class="co">### 11 tunable parameters 11^2</span>
              <span class="co"># tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100</span>
              verbose<span class="op">=</span><span class="fl">0</span>,<span class="co"># verbose=1 is reporting the progress,o is sclience</span>
              trControl <span class="op">=</span> <span class="va">econtrol1</span>,importance <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/varImp.html">varImp</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span>
-
-<span class="va">mod1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">Y1</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">X2</span> <span class="op">+</span> <span class="va">X3</span>, method <span class="op">=</span> <span class="st">'neuralnet'</span>, data <span class="op">=</span> <span class="va">neuraldat</span>, linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
+<span class="va">simf</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/colnames.html">colnames</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sim_example</span><span class="op">[</span>,<span class="fl">15</span><span class="op">:</span><span class="fl">1014</span><span class="op">]</span><span class="op">)</span>, collapse<span class="op">=</span><span class="st">"+"</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"~"</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">mod1</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">simf</span>,data<span class="op">=</span><span class="va">sim_example</span>, method <span class="op">=</span> <span class="st">'neuralnet'</span>, linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
                     tuneLength <span class="op">=</span> <span class="fl">20</span>, <span class="co">### 11 tunable parameters 11^2</span>
                     <span class="co"># tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100</span>
                     verbose<span class="op">=</span><span class="fl">0</span>,<span class="co"># verbose=1 is reporting the progress,o is sclience</span>
@@ -1720,8 +1606,8 @@
 
 <span class="fu"><a href="../reference/varImp.html">varImp</a></span><span class="op">(</span><span class="va">mod1</span><span class="op">)</span>
 
-
-<span class="va">mod2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">Y1</span> <span class="op">~</span> <span class="va">X1</span> <span class="op">+</span> <span class="va">X2</span> <span class="op">+</span> <span class="va">X3</span>, method <span class="op">=</span> <span class="st">'mlpneuralnet'</span>, data <span class="op">=</span> <span class="va">neuraldat</span>, linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
+<span class="va">simf</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/h2o/man/colnames.html">colnames</a></span><span class="op">(</span><span class="va">env</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sim_example</span><span class="op">[</span>,<span class="fl">15</span><span class="op">:</span><span class="fl">1014</span><span class="op">]</span><span class="op">)</span>, collapse<span class="op">=</span><span class="st">"+"</span><span class="op">)</span>,sep<span class="op">=</span><span class="st">"~"</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">mod2</span><span class="op">&lt;-</span> <span class="fu"><a href="../reference/DeepGenomeScan.html">DeepGenomeScan</a></span><span class="op">(</span><span class="va">simf</span>,data<span class="op">=</span><span class="va">sim_example</span>, method <span class="op">=</span> <span class="st">'mlpneuralnet'</span>,  linout <span class="op">=</span> <span class="cn">TRUE</span>,metric <span class="op">=</span> <span class="st">"RMSE"</span>,<span class="co">## "Accuracy", "RMSE","Rsquared","MAE"</span>
                     tuneLength <span class="op">=</span> <span class="fl">20</span>, <span class="co">### 11 tunable parameters 11^2</span>
                     <span class="co"># tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100</span>
                     verbose<span class="op">=</span><span class="fl">0</span>,<span class="co"># verbose=1 is reporting the progress,o is sclience</span>
