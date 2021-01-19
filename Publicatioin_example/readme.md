@@ -20,8 +20,6 @@ _Simulation_MLP_outliers_: Scripts used for estimating the power of genome scan 
 
 _POPRES_DeepGenomeScan_: Scripts used in analysis of POPRES data.
 
-## Step by Step examples for compiling different neural network models using DeepGenomeScan.
-
-See [tutorials](https://xinghuq.github.io/DeepGenomeScan/articles/Deep%20Learning%20Architecture%20Construction.html)
+For step by step examples for compiling different neural network models using DeepGenomeScan, please see [tutorials](https://xinghuq.github.io/DeepGenomeScan/articles/Deep%20Learning%20Architecture%20Construction.html)
 
 Please contact xq5@st-andrews.ac.uk if you have any problems with the paper and the package.
