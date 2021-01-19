@@ -1,6 +1,6 @@
 ## A Deep Learning Approach for Whole Genome Scan
 
-Qin. X, Gaggiotti. EO, Chiang, C. 2020. **A Deep Learning Approach for Whole Genome Scan**
+Qin. X, Chiang, C,Gaggiotti. EO. 2021. **A Deep Learning Approach for Whole Genome Scan**
 
 
 ## Analyses for the article.
