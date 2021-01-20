@@ -48,7 +48,7 @@ for(j in 1:length(modelist)) {
     
     model_envi_mlp=DeepGenomeScan(simf, data=(genotype_norm),
                                 method=modelist[[j]],
-                                metric = "RMSE",## "Accuracy", "RMSE"
+                                metric = "MAE",## "Accuracy", "RMSE"
                                 preProcess=c("scale"),
                                 tuneLength = 100, ### search 100 combinations of parameters
                                 verbose=0,# verbose=1 is reporting the progress,o is sclience

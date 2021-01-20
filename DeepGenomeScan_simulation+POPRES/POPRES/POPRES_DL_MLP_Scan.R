@@ -48,7 +48,7 @@ POPRES_DL_genotype_mat_norm=predict(genotype_impute, genotype_dat)
 
 POPRES_mlpneuralnet_long<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm,y=popres_rm_I_ID$longitude,
                                        method=c("mlpneuralnet1"),
-                                       metric = "RMSE",## "Accuracy", "RMSE"
+                                       metric = "MAE",## "Accuracy", "RMSE","MAE","R squred"
                                        tuneLength = 100, ### search 100 combinations of parameters
                                       # preProcess=c("knnImpute"), 
 verbose=0,# verbose=1 is reporting the progress,o is sclience
@@ -68,7 +68,7 @@ rm(POPRES_mlpneuralnet_long)
     
     POPRES_mlpneuralnet_lat<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm,y=popres_rm_I_ID$latitude,
                                         method=c("mlpneuralnet1"),
-                                        metric = "RMSE",## "Accuracy", "RMSE"
+                                        metric = "MAE",## "Accuracy", "RMSE"
                                         tuneLength = 100, ### search 100 combinations of parameters
                                        # preProcess=c("knnImpute"),
 verbose=0,# verbose=1 is reporting the progress,o is sclience
@@ -127,7 +127,7 @@ print("DL_MLP regression on KLFDAPC5 RD1")
 Sys.time()
 POPRES_mlpneuralnet_KLFDAPC5_RD1<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm, y=KLFDAPC_popresnew5$data$PC1,
                                                    method=c("mlpneuralnet1"),
-                                                   metric = "RMSE",## "Accuracy", "RMSE"
+                                                   metric = "MAE",## "Accuracy", "RMSE"
                                                    tuneLength = 100, ### search 100 combinations of parameters
                                                    # preProcess=c("knnImpute"), 
                                                    verbose=0,# verbose=1 is reporting the progress,o is sclience
@@ -145,7 +145,7 @@ Sys.time()
 #### RD2
 POPRES_mlpneuralnet_KLFDAPC5_RD2<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm, y=KLFDAPC_popresnew5$data$PC2,
                                                    method=c("mlpneuralnet1"),
-                                                   metric = "RMSE",## "Accuracy", "RMSE"
+                                                   metric = "MAE",## "Accuracy", "RMSE"
                                                    tuneLength = 100, ### search 100 combinations of parameters
                                                    #   preProcess=c("knnImpute"),
                                                    verbose=0,# verbose=1 is reporting the progress,o is sclience
