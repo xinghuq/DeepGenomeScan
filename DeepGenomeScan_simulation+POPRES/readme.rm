@@ -32,6 +32,6 @@ POPRES_DL_MLP_Scan: Scripts used in analysis of POPRES data, including EnvGenoem
 
 POPRES_Manhattan: Scripts for making figures for POPRES data.
 
-In terms of step by step examples for compiling different neural network models using DeepGenomeScan, please see [tutorials]().
+In terms of step by step examples for compiling different neural network models using DeepGenomeScan, please see [tutorials](https://xinghuq.github.io/DeepGenomeScan/index.html).
 
 Please contact xq5@st-andrews.ac.uk if you have any problems with the paper and the package.
