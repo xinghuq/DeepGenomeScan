@@ -274,7 +274,7 @@ mlpneuralnet1<- list(label = "Neural Network",
                       },
                       predict = function(modelFit, newdata, submodels = NULL) {
                         newdata <- newdata[, modelFit$model.list$variables, drop = FALSE]
-                        neuralnet::compute(modelFit, covariate = newdata)$net.result[,1]
+                        predict(modelFit, covariate = newdata)$net.result[,1] ### neuralnet::predict,or neuralnet::compute for old version 
                       },
                  varImp = function(object, ...){
                    imps <- NeuralNetTools::olden(object,bar_plot =FALSE)

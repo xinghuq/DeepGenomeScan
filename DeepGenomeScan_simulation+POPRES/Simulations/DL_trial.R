@@ -51,7 +51,7 @@ for(j in 1:length(modelist)) {
                                 metric = "MAE",## "Accuracy", "RMSE"
                                 preProcess=c("scale"),
                                 tuneLength = 100, ### search 100 combinations of parameters
-                                verbose=0,# verbose=1 is reporting the progress,o is sclience
+                               # verbose=0,# verbose=1 is reporting the progress,o is sclience
                                 trControl = econtrol)
     print(paste0("model_",j,"_",para[i],"tuning neuralnet finished"))
     Sys.time()

@@ -62,7 +62,7 @@ mlpneuralnet1<- list(label = "Neural Network",
                       },## if the cluster do not use parallel and runs slowly, lower the number of repeat. 
                       predict = function(modelFit, newdata, submodels = NULL) {
                         newdata <- newdata[, modelFit$model.list$variables, drop = FALSE]
-                        neuralnet::predict(modelFit, covariate = newdata)$net.result[,1]
+                        predict(modelFit, covariate = newdata)$net.result[,1] ##neuralnet::
                       },
                  varImp = function(object, ...){
                    imps <- NeuralNetTools::olden(object,bar_plot =FALSE)
@@ -136,7 +136,7 @@ for(j in 1:length(simdata)) {
                                     metric = "MAE",## "Accuracy", "RMSE","MAE","R-squared"
                                   #  preProcess=c("scale"),
                                     tuneLength = 100, ### search 100 combinations of parameters
-                                    verbose=0,# verbose=1 is reporting the progress,o is sclience
+                                    #verbose=0,# verbose=1 is reporting the progress,o is sclience
                                     trControl = econtrol)
     print(paste0("sim_",j,"_",para[i],"tuning neuralnet finished"))
     Sys.time()

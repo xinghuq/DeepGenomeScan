@@ -61,7 +61,7 @@ mlpneuralnet1<- list(label = "Neural Network",
                       },## if the cluster do not use parallel and runs slowly, lower the number of repeat. 
                       predict = function(modelFit, newdata, submodels = NULL) {
                         newdata <- newdata[, modelFit$model.list$variables, drop = FALSE]
-                        neuralnet::predict(modelFit, covariate = newdata)$net.result[,1]
+                        predict(modelFit, covariate = newdata)$net.result[,1]  ### neuralnet::predict or neuralnet::compute, different versions vary
                       },
                  varImp = function(object, ...){
                    imps <- NeuralNetTools::olden(object,bar_plot =FALSE)
@@ -106,8 +106,8 @@ POPRES_mlpneuralnet_long<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm,y=popres
                                        metric = "MAE",## "Accuracy", "RMSE","MAE","R squred"
                                        tuneLength = 100, ### search 100 combinations of parameters
                                       # preProcess=c("knnImpute"), 
-verbose=0,# verbose=1 is reporting the progress,o is sclience
-                                       trControl = econtrol,importance = TRUE)
+#verbose=0,# verbose=1 is reporting the progress,o is sclience
+                                       trControl = econtrol)
     
     #  keras::unserialize_model(gbmGrid_model_mlpneuralnet_env$finalModel$object)
     POPRES_MLPImp_long <- as.data.frame(NeuralNetTools::olden(POPRES_mlpneuralnet_long, bar_plot=FALSE), stringsAsFactors = TRUE)
@@ -126,8 +126,8 @@ rm(POPRES_mlpneuralnet_long)
                                         metric = "MAE",## "Accuracy", "RMSE"
                                         tuneLength = 100, ### search 100 combinations of parameters
                                        # preProcess=c("knnImpute"),
-verbose=0,# verbose=1 is reporting the progress,o is sclience
-                                        trControl = econtrol,importance = TRUE)
+#verbose=0,# verbose=1 is reporting the progress,o is sclience
+                                        trControl = econtrol)
   
     POPRES_MLPImp_lat <- as.data.frame(NeuralNetTools::olden(POPRES_mlpneuralnet_lat, bar_plot=FALSE), stringsAsFactors = TRUE)
     write.csv(POPRES_MLPImp_lat$importance,file = "POPRES_mlpneuralnet_lat.csv")
@@ -185,8 +185,8 @@ POPRES_mlpneuralnet_KLFDAPC5_RD1<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm,
                                                    metric = "MAE",## "Accuracy", "RMSE"
                                                    tuneLength = 100, ### search 100 combinations of parameters
                                                    # preProcess=c("knnImpute"), 
-                                                   verbose=0,# verbose=1 is reporting the progress,o is sclience
-                                                   trControl = econtrol,importance = TRUE)
+                                                   #verbose=0,# verbose=1 is reporting the progress,o is sclience
+                                                   trControl = econtrol)
 Sys.time()
 
 POPRES_MLPImp_KLFDAPC5_RD1 <- as.data.frame(NeuralNetTools::olden(POPRES_mlpneuralnet_KLFDAPC5_RD1, bar_plot=FALSE), stringsAsFactors = TRUE)
@@ -203,8 +203,8 @@ POPRES_mlpneuralnet_KLFDAPC5_RD2<- DeepGenomeScan(x=POPRES_DL_genotype_mat_norm,
                                                    metric = "MAE",## "Accuracy", "RMSE"
                                                    tuneLength = 100, ### search 100 combinations of parameters
                                                    #   preProcess=c("knnImpute"),
-                                                   verbose=0,# verbose=1 is reporting the progress,o is sclience
-                                                   trControl = econtrol,importance = TRUE)
+                                                   #verbose=0,# verbose=1 is reporting the progress,o is sclience
+                                                   trControl = econtrol)
 
 #  keras::unserialize_model(gbmGrid_model_mlpneuralnet_env$finalModel$object)
 POPRES_MLPImp_KLFDAPC5_RD2 <- as.data.frame(NeuralNetTools::olden(POPRES_mlpneuralnet_KLFDAPC5_RD2, bar_plot=FALSE), stringsAsFactors = TRUE)
