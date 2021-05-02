@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • DeepGenomeScan</title>
+<title>Estimating Garson weights from neural networks
+ — GarsonWeights • DeepGenomeScan</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,7 +37,13 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Estimating Garson weights from neural networks
+ — GarsonWeights" />
+
+<meta property="og:description" content="Based on Gevrey et al. (2003), this function estimates the weights of the nodes/loci in the neural networks. For each hidden neuron i, multiply the absolute value of the hidden-output layer connection weight by the absolute value of the hidden-input layer connection weight. Do this for each input variable j. The following products Pij are obtained.
+" />
+
+
 
 
 
@@ -64,7 +71,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,60 +121,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Estimating Garson weights from neural networks
+<!-- %%  ~~function to do ... ~~ --></h1>
+    
+    <div class="hidden name"><code>GarsonWeights.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>Contents</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="Deep Learning Architecture Construction.html">Deep Learning Architecture Construction and Genome Scan Implementation Using DeeGenomeScan</a></dt>
-        <dd></dt>
-        <dt><a href="Detecting signatures of selection Simulation Case.html">Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</a></dt>
-        <dd></dt>
-        <dt><a href="DeepGenomeScan_model_list.html">DeeGenomeScan Available Models</a></dt>
-        <dd></dt>
-        <dt><a href="Activation_functions.html">Activation Functions</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    
+    <p>Based on Gevrey et al. (2003), this function estimates the weights of the nodes/loci in the neural networks. For each hidden neuron i, multiply the absolute value of the hidden-output layer connection weight by the absolute value of the hidden-input layer connection weight. Do this for each input variable j. The following products Pij are obtained.
+<!-- %%  ~~ A concise (1-5 lines) description of what the function does. ~~ --></p>
+    
     </div>
-    <div class="section ">
-      <h3>Deep Learning Architecture Construction</h3>
-      <p class="section-desc"></p>
 
-      <dl>
-        <dt><a href="Deep Learning Architecture Construction.html">Deep Learning Architecture Construction and Genome Scan Implementation Using DeeGenomeScan</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</h3>
-      <p class="section-desc"></p>
+    <pre class="usage"><span class='fu'>GarsonWeights</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span></pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>The neural netwrok model from one of the h2o, RFCNN4, RSNNS models.
+<!-- %%     ~~Describe \code{object} here~~ --></p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-      <dl>
-        <dt><a href="Detecting signatures of selection Simulation Case.html">Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>DeepGenomeScan Models</h3>
-      <p class="section-desc"></p>
+    <p>Based on Gevrey et al. (2003), this function estimates the weights of the nodes in the neural networks. For each hidden neuron i, multiply the absolute value of the hidden-output layer connection weight by the absolute value of the hidden-input layer connection weight. Do this for each input variable j. The following products Pij are obtained.
+<!-- %%  ~~ If necessary, more details than the description above ~~ --></p>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-      <dl>
-        <dt><a href="DeepGenomeScan_model_list.html">DeeGenomeScan Available Models</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>Activation functions</h3>
-      <p class="section-desc"></p>
+    <p>The nueral weights.
+<!-- %%  ~Describe the value returned -->
+<!-- %%  If it is a LIST, use -->
+<!-- %%  \item{comp1 }{Description of 'comp1'} -->
+<!-- %%  \item{comp2 }{Description of 'comp2'} -->
+<!-- %% ... --></p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-      <dl>
-        <dt><a href="Activation_functions.html">Activation Functions</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
+    <p>Gevrey, M., Dimopoulos, I., &amp; Lek, S. (2003). Review and comparison of methods to study the contribution of variables in artificial neural network models. Ecological modelling, 160(3), 249-264.</p>
+<p><!-- %% ~put references to the literature/web site here ~ --></p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 

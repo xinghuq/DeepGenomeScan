@@ -13,7 +13,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="DeepGenomeScan: A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-wide Association Studies (GWAS)">
 <meta property="og:description" content="This package implements the whole genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic learning and computational design integrating deep learning, robust resampling and cross validations methods, as well as Model-Agnostic interpretation of feature importance for convolutional neural networks. 
-   DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. 
+   DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning-based approach for detecting variations under natural selection or omics-based association studies, such as GWAS, PWAS, TWAS, MWAS. 
    The framework makes the implemention user-friendly. Users can adopt the package's framework to study various ecological and evolutionary questions. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -78,22 +78,25 @@
 <div id="deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deepgenomescan-a-deep-learning-approach-for-whole-genome-scan-wgs-and-genome-wide-association-studies-gwas" class="anchor"></a>DeepGenomeScan : A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-Wide Association Studies (GWAS)</h2>
-<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic computational framework integrating different neural network architectures (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)) and robust resampling methods, as well as the Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning approach for detecting signatures of natural selection and performing omics-based genome-wide association studies, such as GWAS, PWAS, TWAS, MWAS. The design makes the implemention user-friendly. It is compatible with most self-defined machine learning models (the self-defined models shuold be complete, including tunable parameters, fitted model, predicted model, examples can be found in our tutorial). Users can adopt the package’s framework to study various evolutionary questions.</p>
+<p>This package implements the genome scan and genome-wide association studies using deep neural networks (i.e, Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN)). DeepGenomeScan offers heuristic computational framework integrating different neural network architectures (i.e.,Multi-Layer Perceptron (MLP), convolutional neural network(CNN)) and robust resampling methods, as well as the Model-Agnostic interpretation of feature importance for convolutional neural networks. DeepGenomeScan, in other words, deep learning for genome-wide scanning, is a deep learning-based approach for detecting signatures of natural selection or for performing omics-based genome-wide association studies, such as GWAS, PWAS, TWAS, MWAS. The framework makes the implementation user-friendly. It is compatible with most of the self-defined machine learning models (the self-defined models should be complete, including tunable parameters, fitted model, predicted model, examples can be found in our <a href="https://xinghuq.github.io/DeepGenomeScan/articles/Deep%20Learning%20Architecture%20Construction.html">tutorial</a>). Users can adopt this framework to study various evolutionary questions.</p>
 </div>
 <div id="install-packages" class="section level2">
 <h2 class="hasAnchor">
 <a href="#install-packages" class="anchor"></a>Install packages</h2>
-<pre class="{r}"><code><a href="https://github.com/r-lib/devtools">library("devtools")
-devtools::install_github("xinghuq/DeepGenomeScan")
-devtools::install_github("xinghuq/CaretPlus/pkg/caret")</a></code></pre>
 <div id="dependencies-and-environment-requirements" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dependencies-and-environment-requirements" class="anchor"></a>Dependencies and environment requirements</h3>
 <div id="note-environment-requirements-python-should-be-installed-and-the-python-package-of-keras-and-tensorflow-should-also-be-installed-and-work-properly-with-the-system" class="section level4">
 <h4 class="hasAnchor">
 <a href="#note-environment-requirements-python-should-be-installed-and-the-python-package-of-keras-and-tensorflow-should-also-be-installed-and-work-properly-with-the-system" class="anchor"></a>Note: Environment requirements: python should be installed and the python package of Keras and Tensorflow should also be installed and work properly with the system</h4>
-<pre class="{r}"><code>
+<pre class="{r}"><code><a href="https://github.com/r-lib/devtools">
+library("devtools")
+
+## The modified version of caret
+devtools::install_github("xinghuq/CaretPlus/pkg/caret")
+
 ###DA and KLFDAPC are used for SpGenomeScan
+
 
  if (!requireNamespace("DA", quietly=TRUE))
  
@@ -116,26 +119,30 @@ if (!requireNamespace("keras", quietly=TRUE))
  if (!requireNamespace("kerasR", quietly=TRUE))
  
   install.packages("kerasR")
-</code></pre>
+
+### The latest version of DeepGenomeScan 
+
+devtools::install_github("xinghuq/DeepGenomeScan")
+</a></code></pre>
 </div>
 </div>
-<div id="checking-the-python-environment" class="section level3">
+<div id="if-using-tensorflow-or-keras-model-see-example-in-tutorial-checking-the-python-environment" class="section level3">
 <h3 class="hasAnchor">
-<a href="#checking-the-python-environment" class="anchor"></a>Checking the python environment</h3>
-<pre class="{r}"><code>library("rappdirs")
+<a href="#if-using-tensorflow-or-keras-model-see-example-in-tutorial-checking-the-python-environment" class="anchor"></a>If using Tensorflow or keras model (see example in <a href="https://xinghuq.github.io/DeepGenomeScan/articles/Deep%20Learning%20Architecture%20Construction.html">tutorial</a>), checking the python environment</h3>
+<pre class="{r}"><code><a href="https://github.com/hadley/rappdirs">library("rappdirs")
 library("reticulate")
 reticulate::use_python("/usr/bin/python3")
 library(caret) ### for ML calling functions and performance estimation, users should use the modified version at xinghuq/CaretPlus/caret instead of the original version
 library(keras)  
 library("tensorflow")
 
-checking if Tensorflow works properly
+# checking if Tensorflow works properly
 K0=keras::backend()
-</code></pre>
+</a></code></pre>
 </div>
 <div id="loading-library" class="section level3">
 <h3 class="hasAnchor">
-<a href="#loading-library" class="anchor"></a>loading library</h3>
+<a href="#loading-library" class="anchor"></a>Loading library</h3>
 <pre class="{r}"><code><a href="https://github.com/xinghuq/DeepGenomeScan">library("DeepGenomeScan")
 library("caret")### for ML calling functions and performance estimation
 library("keras") ### for DL
@@ -178,8 +185,8 @@ options(warn=-1</code></pre>
 GSmlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
                                   method="mlp",
                                   metric = "RMSE",## "Accuracy", "RMSE","Rsquared","MAE"
-                                  tuneLength = 10, ### 11 tunable parameters 11^2
-                                  # tuneGrid=CNNGrid, ### or search 100 combinations of parameters using random tuneLength=100
+                                  tuneLength = 10, ### random search 10 hyperparameter combinations
+                                  # tuneGrid=CNNGrid, or setting the tune grid
                                   trControl = econtrol1)
 
 #### varIMP for SNPs
@@ -206,8 +213,8 @@ abline(h=2, col="blue")
 <div id="citation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#citation" class="anchor"></a>Citation</h3>
-<p>Qin, X. 2020. DeepGenomeScan. v0.5.5.</p>
-<p>Qin, X., Gaggiotti, EO., Chiang, C. 2020. Detecting natural selection via deep learning. In submission.</p>
+<p>Qin, X. 2020. DeepGenomeScan: A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-Wide Association Studies (GWAS). R package, v0.5.5.</p>
+<p>Qin, X., Chiang, C.,Gaggiotti, EO. 2021. Detecting natural selection via deep learning. In submission.</p>
 </div>
 </div>
 

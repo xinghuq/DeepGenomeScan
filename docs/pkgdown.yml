@@ -5,8 +5,10 @@ articles:
   Activation_functions: Activation_functions.html
   Deep Learning Architecture Construction: Deep Learning Architecture Construction.html
   DeepGenomeScan_model_list: DeepGenomeScan_model_list.html
+  Detecting signatures of selection Simulation Case: Detecting signatures of selection
+    Simulation Case.html
   home: home.html
-last_built: 2020-11-13T00:02Z
+last_built: 2021-05-02T19:38Z
 urls:
   reference: http://github.com/xinghuq/DeepGenomeScan/reference
   article: http://github.com/xinghuq/DeepGenomeScan/articles

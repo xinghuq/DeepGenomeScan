@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • DeepGenomeScan</title>
+<title>Estimating Garson weights from FCNN4R models 
+ — GarsonWeights_FCNN4R • DeepGenomeScan</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,7 +37,13 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Estimating Garson weights from FCNN4R models 
+ — GarsonWeights_FCNN4R" />
+
+<meta property="og:description" content="This function estimates the weights of loci based on Garson et al.(2013). 
+" />
+
+
 
 
 
@@ -64,7 +71,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,60 +121,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Estimating Garson weights from FCNN4R models 
+<!-- %%  ~~function to do ... ~~ --></h1>
+    
+    <div class="hidden name"><code>GarsonWeights_FCNN4R.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>Contents</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="Deep Learning Architecture Construction.html">Deep Learning Architecture Construction and Genome Scan Implementation Using DeeGenomeScan</a></dt>
-        <dd></dt>
-        <dt><a href="Detecting signatures of selection Simulation Case.html">Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</a></dt>
-        <dd></dt>
-        <dt><a href="DeepGenomeScan_model_list.html">DeeGenomeScan Available Models</a></dt>
-        <dd></dt>
-        <dt><a href="Activation_functions.html">Activation Functions</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    
+    <p>This function estimates the weights of loci based on Garson et al.(2013). 
+<!-- %%  ~~ A concise (1-5 lines) description of what the function does. ~~ --></p>
+    
     </div>
-    <div class="section ">
-      <h3>Deep Learning Architecture Construction</h3>
-      <p class="section-desc"></p>
 
-      <dl>
-        <dt><a href="Deep Learning Architecture Construction.html">Deep Learning Architecture Construction and Genome Scan Implementation Using DeeGenomeScan</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</h3>
-      <p class="section-desc"></p>
+    <pre class="usage"><span class='fu'>GarsonWeights_FCNN4R</span><span class='op'>(</span><span class='va'>object</span>, xnames <span class='op'>=</span> <span class='cn'>NULL</span>, ynames <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>FCNN4R model
+<!-- %%     ~~Describe \code{object} here~~ --></p></td>
+    </tr>
+    <tr>
+      <th>xnames</th>
+      <td><p>optional, independent variable names
+<!-- %%     ~~Describe \code{xnames} here~~ --></p></td>
+    </tr>
+    <tr>
+      <th>ynames</th>
+      <td><p>optional, dependent variable names
+<!-- %%     ~~Describe \code{ynames} here~~ --></p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-      <dl>
-        <dt><a href="Detecting signatures of selection Simulation Case.html">Detecting signatures of selection with known environmnetal factors: a case of EnvGenomeScan</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>DeepGenomeScan Models</h3>
-      <p class="section-desc"></p>
+    <p>This function estimates the weights of neurons/loci based on Garson et al.(2013). Based on Gevrey et al. (2003), for each hidden neuron i, multiply the absolute value of the hidden-output layer connection weight by the absolute value of the hidden-input layer connection weight. Do this for each input variable j. The following products Pij are obtained.
+<!-- %%  ~~ If necessary, more details than the description above ~~ --></p>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-      <dl>
-        <dt><a href="DeepGenomeScan_model_list.html">DeeGenomeScan Available Models</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
-    <div class="section ">
-      <h3>Activation functions</h3>
-      <p class="section-desc"></p>
+    <p>an array with the weights of each locus.
+<!-- %%  ~Describe the value returned -->
+<!-- %%  If it is a LIST, use -->
+<!-- %%  \item{comp1 }{Description of 'comp1'} -->
+<!-- %%  \item{comp2 }{Description of 'comp2'} -->
+<!-- %% ... --></p>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-      <dl>
-        <dt><a href="Activation_functions.html">Activation Functions</a></dt>
-        <dd></dt>
-      </dl>
-    </div>
+    <p>Gevrey, M., Dimopoulos, I., &amp; Lek, S. (2003). Review and comparison of methods to study the contribution of variables in artificial neural network models. Ecological modelling, 160(3), 249-264.
+<!-- %% ~put references to the literature/web site here ~ --></p>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
