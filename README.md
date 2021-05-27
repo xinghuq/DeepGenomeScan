@@ -1,7 +1,7 @@
 [![R build status](https://https://github.com/xinghuq/DeepGenomeScan//workflows/R-CMD-check/badge.svg)](https://github.com/xinghuq/DeepGenomeScan/)
 [![Build Status](https://travis-ci.com/xinghuq/DeepGenomeScan.svg?branch=master)](https://travis-ci.com/xinghuq/DeepGenomeScan/)
 [![Build status](https://ci.appveyor.com/api/projects/status/hqpwmgfeuerel48l?svg=true)](https://ci.appveyor.com/xinghuq/DeepGenomeScan/)
-[![License:](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License:C](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/xinghuq/DeepGenomeScan/blob/master/License)
 
 
 ## DeepGenomeScan : A Deep Learning Approach for Whole Genome Scan (WGS) and Genome-wide Association Studies (GWAS)
