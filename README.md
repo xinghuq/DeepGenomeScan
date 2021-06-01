@@ -138,4 +138,4 @@ qinxinghu@gmail.com
 
 Qin, X. 2020. DeepGenomeScan. v0.5.5.
 
-Qin, X., Gaggiotti, EO., Chiang, C. 2020. Detecting natural selection via deep learning. In submission.
+Qin X, Chiang CWK, Gaggiotti OE. 2021. Deciphering signatures of natural selection via deep learning. bioRxiv:2021.2005.2027.445973.
