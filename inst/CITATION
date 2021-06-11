@@ -1,0 +1,15 @@
+citHeader("To cite DeepGenomeScan in publications use:")
+
+website <- "http://github.com/xinghuq/DeepGenomeScan"
+year    <- sub("-.*","",meta$Date)
+version <- sprintf("R package version %s",meta$Version)
+
+citEntry(entry = "Manual",
+  title  = "{KLFDAPC}: Qin, X., Chiang, C.W.K., and Gaggiotti, O.E. (2021). Deciphering signatures of natural selection via deep learning. bioRxiv:2021.2005.2027.445973.",
+  author = personList(as.person("Xinghu Qin"),
+                      as.person("Charleston Chiang"),
+                      as.person("Oscar Gaggiotti")),
+
+  textVersion =
+    paste(Qin, X., Chiang, C.W.K., and Gaggiotti, O.E. (2021). Deciphering signatures of natural selection via deep learning. bioRxiv:2021.2005.2027.445973)
+)
