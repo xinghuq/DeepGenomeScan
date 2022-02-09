@@ -46,7 +46,7 @@ requireNamespace("KLFDAPC")
 
 if (!requireNamespace("keras", quietly=TRUE))
 
- Install.packages("keras")
+ install.packages("keras")
   
  if (!requireNamespace("tensorflow", quietly=TRUE))
  
