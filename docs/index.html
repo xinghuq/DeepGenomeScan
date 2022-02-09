@@ -106,12 +106,12 @@ requireNamespace("KLFDAPC")
 
  if (!requireNamespace("KLFDAPC", quietly=TRUE))
 
-  devtools::Install_github("xinghuq/KLFDAPC")
+  devtools::install_github("xinghuq/KLFDAPC")
   
 
 if (!requireNamespace("keras", quietly=TRUE))
 
- Install.packages("keras")
+ install.packages("keras")
   
  if (!requireNamespace("tensorflow", quietly=TRUE))
  
@@ -189,6 +189,7 @@ GSmlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
                                   # tuneGrid=CNNGrid, or setting the tune grid
                                   trControl = econtrol1)
 
+#### Note the genotype_norm is a n*p genotype matrix
 #### varIMP for SNPs
 out=varImp(GSmlp,scale = FALSE)
 </code></pre>
