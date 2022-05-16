@@ -34,4 +34,4 @@ POPRES_Manhattan: Scripts for making figures for POPRES data.
 
 In terms of step by step examples for compiling different neural network models using DeepGenomeScan, please see [tutorials](https://xinghuq.github.io/DeepGenomeScan/index.html).
 
-Please contact xq5@st-andrews.ac.uk if you have any questions with the paper and the package.
+Please contact qinxinghu@gmail.com if you have any questions with the paper and the package.
