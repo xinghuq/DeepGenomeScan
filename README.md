@@ -115,8 +115,37 @@ colnames(out)[colnames(out) == "scaled_importance"] <- "Overall"
 rownames(out) <- out$names
 
 ``````
-##### Plot the SNP importance scores
+##### Calculating the p-values for SNPs and plot the SNP Manhattan plot
 ``````{r}
+
+DLqvaluesarsine<-function(DL_data,K)
+{
+  loadings<-DL_data# [,1:as.numeric(K)]
+  normdat <- apply(loadings, 2, normalize)
+  asindat=apply(normdat,2, function(x) {asin(sqrt(x))})
+  resmaha <- covRob(asindat, distance = TRUE, na.action= na.omit, estim="donostah")$dist
+  lambda <- median(resmaha)/qchisq(0.5,df=K)
+  reschi2test <- pchisq(resmaha/lambda,K,lower.tail=FALSE)
+  qval <- qvalue(reschi2test)
+  q.values_DL<-qval$qvalues
+  padj <- p.adjust(reschi2test,method="bonferroni")
+  return(data.frame(p.values=reschi2test, q.values=q.values_DL,padj=padj,mahaD=resmaha))
+}
+
+
+
+DLsim1=apply(out,2,normalize) #18
+
+Simqvaluear=DLqvaluesarsine(DLsim1,1)
+
+
+
+## Manhattan plot
+
+ggplot() +
+  geom_point(aes(x=which(Loci=="Neutral"), y=-log10(Simqvaluear[-which(Loci!="Neutral"),1])), col = "gray83") +
+  geom_point(aes(x=which(Loci!="Neutral"), y=-log10(Simqvaluear[-which(Loci=="Neutral"),1]), colour = Selected_Loci)) +
+  xlab("SNPs") + ylab("DNN -log10(p-value)") +ylim(c(0,100))+theme_bw()
 plot(out$Overall,  ylab="SNP importance")
 
 ``````
