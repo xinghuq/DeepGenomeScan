@@ -116,6 +116,7 @@ rownames(out) <- out$names
 
 ``````
 ##### Calculating the p-values for SNPs and plot the SNP Manhattan plot
+
 ``````{r}
 
 DLqvaluesarsine<-function(DL_data,K)
@@ -137,11 +138,11 @@ DLqvaluesarsine<-function(DL_data,K)
 DLsim1=apply(out,2,normalize) #18
 
 Simqvaluear=DLqvaluesarsine(DLsim1,1)
-
-
+``````
 
 ## Manhattan plot
 
+``````
 ggplot() +
   geom_point(aes(x=which(Loci=="Neutral"), y=-log10(Simqvaluear[-which(Loci!="Neutral"),1])), col = "gray83") +
   geom_point(aes(x=which(Loci!="Neutral"), y=-log10(Simqvaluear[-which(Loci=="Neutral"),1]), colour = Selected_Loci)) +
