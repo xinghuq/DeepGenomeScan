@@ -183,7 +183,7 @@ options(warn=-1</code></pre>
 <a href="#deepgenomescan-with-mlp-model" class="anchor"></a>DeepGenomeScan with “mlp” model</h3>
 <pre class="{r}"><code>
 GSmlp&lt;- DeepGenomeScan(as.matrix(genotype_norm),env$envir1,
-                                  method="mlp",
+                                  method="mlpSGD",
                                   metric = "RMSE",## "Accuracy", "RMSE","Rsquared","MAE"
                                   tuneLength = 10, ### random search 10 hyperparameter combinations
                                   # tuneGrid=CNNGrid, or setting the tune grid
