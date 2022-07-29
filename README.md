@@ -166,6 +166,4 @@ qinxinghu@gmail.com
 
 ## Citation
 
-Qin, X. 2020. DeepGenomeScan. v0.5.5.
-
-Qin X, Chiang CWK, Gaggiotti OE. 2021. Deciphering signatures of natural selection via deep learning. bioRxiv:2021.2005.2027.445973.
+Qin X, Chiang CWK, Gaggiotti OE. 2022. Deciphering signatures of natural selection via deep learning. Briefings in Bioinformatics. preprint (bioRxiv:2021.2005.2027.445973).
