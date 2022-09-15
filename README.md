@@ -166,4 +166,4 @@ qinxinghu@gmail.com
 
 ## Citation
 
-Qin X, Chiang CWK, Gaggiotti OE. 2022. Deciphering signatures of natural selection via deep learning. Briefings in Bioinformatics. preprint (bioRxiv:2021.2005.2027.445973).
+Qin X, Chiang CWK, Gaggiotti OE. 2022. Deciphering signatures of natural selection via deep learning. Briefings in Bioinformatics. bbac354, https://doi.org/10.1093/bib/bbac354.
