@@ -66,7 +66,7 @@ library(keras) ### for DL
 library("tensorflow")
 library("caretEnsemble")
 library(kerasR)
-library("RSNNS")
+library("h2o")
 library(NeuralNetTools)
 
 ```
